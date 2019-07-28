@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/components/title_bar.dart';
+import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/navigation/routes.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
@@ -119,40 +120,16 @@ class MyHomePageState extends State<MyHomePage>
               ),
             ],
           ),
-          Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.red, width: 4.0)),
-              child: IconButton(
-                  icon: AnimatedIcon(
-                      icon: AnimatedIcons.menu_close,
-                      color: Colors.red,
-                      progress: _iconAnimationController.view),
-                  onPressed: () {
-                    onIconPressed();
-                  }),
-            ),
-          ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        key: Keys.addReading,
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.addReading);
+        },
+      ),
     );
-  }
-
-  void onIconPressed() {
-    animationStatus
-        ? _iconAnimationController.reverse()
-        : _iconAnimationController.forward();
-    Navigator.pushNamed(context, Routes.addReading);
-  }
-
-  bool get animationStatus {
-    final AnimationStatus status = _iconAnimationController.status;
-    return status == AnimationStatus.completed;
   }
 }
 

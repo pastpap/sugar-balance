@@ -13,4 +13,8 @@ class Keys {
   static final valueField = const Key('__valueField__');
   static final dateField = const Key('__dateField__');
   static final noteField = const Key('__noteField__');
+
+  // Edit Screen
+  static final editReadingScreen = const Key('__editReadingScreen__');
+  static final saveReadingFab = const Key('__saveReadingFab__');
 }
