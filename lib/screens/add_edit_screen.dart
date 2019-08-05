@@ -63,7 +63,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
             children: [
               TextFormField(
                 initialValue: isEditing ? widget.reading.value : '0',
-                key: Keys.noteField,
+                key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
                 style: textTheme.headline,

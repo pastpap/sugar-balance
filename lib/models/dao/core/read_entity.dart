@@ -35,8 +35,8 @@ class ReadEntity {
   Map<String, Object> toJson() {
     return {
       "value": value,
-      "date": date,
-      "time": time,
+      "date": date.toIso8601String(),
+      "time": time.toString(),
       "note": note,
       "id": id,
     };
