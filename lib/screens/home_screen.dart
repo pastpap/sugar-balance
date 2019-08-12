@@ -4,6 +4,7 @@ import 'package:sugar_balance/components/title_bar.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/navigation/routes.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
+import 'package:sugar_balance/widgets/filtered_reads.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -106,15 +107,9 @@ class MyHomePageState extends State<MyHomePage>
               RadialProgress(),
               Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Row(
+                child: Column(
                   children: <Widget>[
-                    Flexible(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[],
-                      ),
-                    ),
+                    FilteredReads(),
                   ],
                 ),
               ),

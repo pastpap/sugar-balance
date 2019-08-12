@@ -158,10 +158,10 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String todoDeleted(String task) => Intl.message(
-        'Deleted "$task"',
+  String readDeleted(String value) => Intl.message(
+        'Deleted "$value"',
         name: 'todoDeleted',
-        args: [task],
+        args: [value],
         locale: locale.toString(),
       );
 

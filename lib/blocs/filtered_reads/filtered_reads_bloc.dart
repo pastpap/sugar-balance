@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads_event.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads_state.dart';
+import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
 import 'package:sugar_balance/models/models.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
 
@@ -35,7 +34,7 @@ class FilteredReadsBloc
     if (event is UpdateFilter) {
       yield* _mapUpdateFilterToState(event);
     } else if (event is UpdateReadings) {
-      yield* _mapTodosUpdatedToState(event);
+      yield* _mapReadsUpdatedToState(event);
     }
   }
 
@@ -44,7 +43,7 @@ class FilteredReadsBloc
   ) async* {
     if (readsBloc.currentState is ReadsLoaded) {
       yield FilteredReadLoaded(
-        _mapTodosToFilteredTodos(
+        _mapReadsToFilteredReads(
           (readsBloc.currentState as ReadsLoaded).reads,
           event.filter,
         ),
@@ -53,14 +52,14 @@ class FilteredReadsBloc
     }
   }
 
-  Stream<FilteredReadingState> _mapTodosUpdatedToState(
+  Stream<FilteredReadingState> _mapReadsUpdatedToState(
     UpdateReadings event,
   ) async* {
     final visibilityFilter = currentState is FilteredReadLoaded
         ? (currentState as FilteredReadLoaded).activeFilter
         : VisibilityFilter.all;
     yield FilteredReadLoaded(
-      _mapTodosToFilteredTodos(
+      _mapReadsToFilteredReads(
         (readsBloc.currentState as ReadsLoaded).reads,
         visibilityFilter,
       ),
@@ -68,12 +67,13 @@ class FilteredReadsBloc
     );
   }
 
-  List<Reading> _mapTodosToFilteredTodos(
-      List<Reading> todos, VisibilityFilter filter) {
-    return todos.where((todo) {
+  List<Reading> _mapReadsToFilteredReads(
+      List<Reading> reads, VisibilityFilter filter) {
+    return reads.where((read) {
       if (filter == VisibilityFilter.all) {
         return true;
       }
+      return false;
     }).toList();
   }
 

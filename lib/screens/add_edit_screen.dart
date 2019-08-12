@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sugar_balance/components/date_time_picker.dart';
 import 'package:sugar_balance/localizations/localization.dart';
-import 'package:sugar_balance/models/Reading.dart';
+import 'package:sugar_balance/models/reading.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 
 typedef OnSaveCallback = Function(
@@ -27,7 +27,7 @@ class AddEditScreen extends StatefulWidget {
 class _AddEditScreenState extends State<AddEditScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  int _task;
+  int _value;
   String _note;
   static DateTime _fromDate = DateTime.now();
   TimeOfDay _fromTime =
@@ -76,7 +76,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                       ? localizations.emptyBloodLevel
                       : null;
                 },
-                onSaved: (value) => _task = int.parse(value),
+                onSaved: (value) => _value = int.parse(value),
               ),
               DateTimePicker(
                 labelText: 'From',
@@ -140,7 +140,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            widget.onSave(_task, _fromDate, _fromTime, _note);
+            widget.onSave(_value, _fromDate, _fromTime, _note);
             Navigator.pop(context);
           }
         },

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sugar_balance/blocs/filtered_reads/filtered_reads_bloc.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
 import 'package:sugar_balance/blocs/simple_bloc_delegate.dart';
 import 'package:sugar_balance/models/dao/reads_repository_simple.dart';
@@ -49,7 +50,11 @@ class SuggarBlanceApp extends StatelessWidget {
       localizationsDelegates: [SugarBalanceLocalizationsDelegate()],
       routes: {
         Routes.home: (context) {
-          return BlocProviderTree(blocProviders: [], child: MyHomePage());
+          return MultiBlocProvider(providers: [
+            BlocProvider<FilteredReadsBloc>(
+              builder: (context) => FilteredReadsBloc(readsBloc: readsBloc),
+            ),
+          ], child: MyHomePage());
         },
         Routes.addReading: (context) {
           return AddEditScreen(
