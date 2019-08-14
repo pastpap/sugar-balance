@@ -21,6 +21,7 @@ dependencies:
   equatable: ^0.2.0
   flutter_bloc: ^0.20.0
   path_provider: ^0.4.1
+  sliding_up_panel: ^0.3.4
   flutter:
     sdk: flutter
 

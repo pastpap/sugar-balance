@@ -33,15 +33,24 @@ class ReadItem extends StatelessWidget {
             ),
           ),
         ),
-        subtitle: reading.note.isNotEmpty
-            ? Text(
-                reading.note,
-                key: Keys.readItemNote(reading.id),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.subhead,
-              )
-            : null,
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              reading.time.format(context),
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            reading.note.isNotEmpty
+                ? Text(
+                    reading.note,
+                    key: Keys.readItemNote(reading.id),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subhead,
+                  )
+                : null,
+          ],
+        ),
       ),
     );
   }

@@ -25,35 +25,35 @@ class FilteredReads extends StatelessWidget {
         if (state is FilteredReadLoading) {
           return LoadingIndicator(key: Keys.readsLoading);
         } else if (state is FilteredReadLoaded) {
-          final todos = state.filteredReads;
+          final reads = state.filteredReads;
           return ListView.builder(
             shrinkWrap: true,
             key: Keys.readList,
-            itemCount: todos.length,
+            itemCount: reads.length,
             itemBuilder: (BuildContext context, int index) {
-              final todo = todos[index];
+              final read = reads[index];
               return ReadItem(
-                reading: todo,
+                reading: read,
                 onDismissed: (direction) {
-                  readsBloc.dispatch(DeleteRead(todo));
+                  readsBloc.dispatch(DeleteRead(read));
                   Scaffold.of(context).showSnackBar(DeleteReadSnackBar(
                     key: Keys.snackbar,
-                    reading: todo,
-                    onUndo: () => readsBloc.dispatch(AddRead(todo)),
+                    reading: read,
+                    onUndo: () => readsBloc.dispatch(AddRead(read)),
                     localizations: localizations,
                   ));
                 },
                 onTap: () async {
-                  final removedTodo = await Navigator.of(context).push(
+                  final removedRead = await Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) {
-                      return DetailsScreen(id: todo.id);
+                      return DetailsScreen(id: read.id);
                     }),
                   );
-                  if (removedTodo != null) {
+                  if (removedRead != null) {
                     Scaffold.of(context).showSnackBar(DeleteReadSnackBar(
                       key: Keys.snackbar,
-                      reading: todo,
-                      onUndo: () => readsBloc.dispatch(AddRead(todo)),
+                      reading: read,
+                      onUndo: () => readsBloc.dispatch(AddRead(read)),
                       localizations: localizations,
                     ));
                   }

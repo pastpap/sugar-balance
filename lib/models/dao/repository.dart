@@ -29,11 +29,7 @@ class ReadsRepositoryFlutter implements ReadsRepository {
     try {
       return await fileStorage.loadReads();
     } catch (e) {
-      final todos = await webClient.fetchReads();
-
-      fileStorage.saveReads(todos);
-
-      return todos;
+      return new List<ReadEntity>();
     }
   }
 
@@ -42,7 +38,6 @@ class ReadsRepositoryFlutter implements ReadsRepository {
   Future saveReads(List<ReadEntity> reads) {
     return Future.wait<dynamic>([
       fileStorage.saveReads(reads),
-      webClient.postReads(reads),
     ]);
   }
 }

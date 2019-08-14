@@ -36,7 +36,7 @@ class ReadEntity {
     return {
       "value": value,
       "date": date.toIso8601String(),
-      "time": time.toString(),
+      "time": time.hour.toString() + ":" + time.minute.toString(),
       "note": note,
       "id": id,
     };
@@ -52,7 +52,9 @@ class ReadEntity {
         json["value"] as int,
         json["id"] as String,
         json["note"] as String,
-        json["date"] as DateTime,
-        json["time"] as TimeOfDay);
+        DateTime.parse(json["date"]),
+        TimeOfDay(
+            hour: int.parse(json["time"].toString().split(":")[0]),
+            minute: int.parse(json["time"].toString().split(":")[1])));
   }
 }

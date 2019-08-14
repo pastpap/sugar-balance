@@ -37,7 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteTodo": MessageLookupByLibrary.simpleMessage("Delete Todo"),
         "deleteTodoConfirmation":
             MessageLookupByLibrary.simpleMessage("Delete this todo?"),
-        "editTodo": MessageLookupByLibrary.simpleMessage("Edit Todo"),
+        "editReading": MessageLookupByLibrary.simpleMessage("Edit Reading"),
         "emptyBloodLevel":
             MessageLookupByLibrary.simpleMessage("Please enter a number"),
         "filterTodos": MessageLookupByLibrary.simpleMessage("Filter Todos"),

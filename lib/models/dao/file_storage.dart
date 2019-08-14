@@ -26,11 +26,11 @@ class FileStorage {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = JsonDecoder().convert(string);
-    final todos = (json['reads'])
-        .map<ReadEntity>((todo) => ReadEntity.fromJson(todo))
+    final reads = (json['reads'])
+        .map<ReadEntity>((read) => ReadEntity.fromJson(read))
         .toList();
 
-    return todos;
+    return reads;
   }
 
   Future<File> saveReads(List<ReadEntity> reads) async {

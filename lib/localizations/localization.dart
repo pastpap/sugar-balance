@@ -95,9 +95,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get editTodo => Intl.message(
-        'Edit Todo',
-        name: 'editTodo',
+  String get editReading => Intl.message(
+        'Edit Blood Reading',
+        name: 'editReading',
         args: [],
         locale: locale.toString(),
       );

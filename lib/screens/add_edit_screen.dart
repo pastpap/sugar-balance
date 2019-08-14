@@ -29,18 +29,23 @@ class _AddEditScreenState extends State<AddEditScreen> {
 
   int _value;
   String _note;
-  static DateTime _fromDate = DateTime.now();
+  DateTime _fromDate = DateTime.now();
   TimeOfDay _fromTime =
-      TimeOfDay(hour: _fromDate.hour, minute: _fromDate.minute);
+      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
   final List<String> _allMeals = <String>[
     'Breakfast',
     'Brunch',
     'Lunch',
     'Dinner',
-    'Extra snack'
+    'Extra snack',
+  ];
+  final List<String> _allPeriods = <String>[
+    'Before',
+    'After',
   ];
   String _meal = 'Breakfast';
+  String _period = 'Before';
 
   bool get isEditing => widget.isEditing;
   @override
@@ -51,8 +56,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          //  isEditing ? localizations.editTodo : localizations.addTodo,
-          isEditing ? "Edit Read" : "Add Read",
+          isEditing ? localizations.editReading : localizations.addReading,
         ),
       ),
       body: Padding(
@@ -62,7 +66,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: isEditing ? widget.reading.value : '0',
+                initialValue: isEditing ? widget.reading.value.toString() : '0',
                 key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
@@ -80,8 +84,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ),
               DateTimePicker(
                 labelText: 'From',
-                selectedDate: _fromDate,
-                selectedTime: _fromTime,
+                selectedDate: isEditing ? widget.reading.date : _fromDate,
+                selectedTime: isEditing ? widget.reading.time : _fromTime,
                 selectDate: (DateTime date) {
                   setState(() {
                     _fromDate = date;
@@ -97,24 +101,46 @@ class _AddEditScreenState extends State<AddEditScreen> {
               InputDecorator(
                 decoration: const InputDecoration(
                   labelText: 'Meal',
-                  hintText: 'Choose an meal',
+                  hintText: 'Choose a meal',
                   contentPadding: EdgeInsets.zero,
                 ),
                 isEmpty: _meal == null,
-                child: DropdownButton<String>(
-                  value: _meal,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _meal = newValue;
-                    });
-                  },
-                  items:
-                      _allMeals.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                child: Row(
+                  children: <Widget>[
+                    DropdownButton<String>(
+                      value: _meal,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          _meal = newValue;
+                        });
+                      },
+                      items: _allMeals
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    DropdownButton<String>(
+                      value: _period,
+                      onChanged: (String newPeriod) {
+                        setState(() {
+                          _period = newPeriod;
+                        });
+                      },
+                      items: _allPeriods
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
               ),
               TextFormField(

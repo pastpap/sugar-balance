@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/components/title_bar.dart';
 import 'package:sugar_balance/navigation/keys.dart';
@@ -6,6 +7,7 @@ import 'package:sugar_balance/navigation/routes.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
 import 'package:sugar_balance/widgets/filtered_reads.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
+import 'package:sugar_balance/themes/colors.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -35,94 +37,140 @@ class MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  TopBar(),
-                  Positioned(
-                    top: 60.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                            size: 35.0,
-                          ),
-                          onPressed: () {
-                            _homePageBloc.subtractDate();
-                          },
-                        ),
-                        StreamBuilder(
-                          stream: _homePageBloc.dateStream,
-                          initialData: _homePageBloc.selectedDate,
-                          builder: (context, snapshot) {
-                            return Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    formatterDayOfWeek.format(snapshot.data),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24.0,
-                                        color: Colors.white,
-                                        letterSpacing: 1.2),
-                                  ),
-                                  Text(
-                                    formatterDate.format(snapshot.data),
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.white,
-                                      letterSpacing: 1.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        Transform.rotate(
-                          angle: 135.0,
-                          child: IconButton(
+      body: SlidingUpPanel(
+        renderPanelSheet: false,
+        color: Colors.blueAccent,
+        collapsed: _floatingCollapsed(),
+        panel: _floatingPanel(),
+        body: Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    TopBar(),
+                    Positioned(
+                      top: 60.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
                             icon: Icon(
                               Icons.arrow_back_ios,
                               color: Colors.white,
                               size: 35.0,
                             ),
                             onPressed: () {
-                              _homePageBloc.addDate();
+                              _homePageBloc.subtractDate();
                             },
                           ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              RadialProgress(),
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    FilteredReads(),
+                          StreamBuilder(
+                            stream: _homePageBloc.dateStream,
+                            initialData: _homePageBloc.selectedDate,
+                            builder: (context, snapshot) {
+                              return Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      formatterDayOfWeek.format(snapshot.data),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24.0,
+                                          color: Colors.white,
+                                          letterSpacing: 1.2),
+                                    ),
+                                    Text(
+                                      formatterDate.format(snapshot.data),
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                        letterSpacing: 1.3,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          Transform.rotate(
+                            angle: 135.0,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.white,
+                                size: 35.0,
+                              ),
+                              onPressed: () {
+                                _homePageBloc.addDate();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              ),
-            ],
-          ),
-        ],
+                RadialProgress(),
+              ],
+            ),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        key: Keys.addReading,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.addReading);
-        },
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0),
+        child: FloatingActionButton(
+          key: Keys.addReading,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, Routes.addReading);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _floatingCollapsed() {
+    return Container(
+      decoration: BoxDecoration(
+        color: firstColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+      ),
+      margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+      child: Center(
+        child: Text(
+          "Swipe up for today's list",
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        ),
+      ),
+    );
+  }
+
+  Widget _floatingPanel() {
+    return Container(
+      decoration: BoxDecoration(
+          color: secondColor,
+          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20.0,
+              color: Colors.grey,
+            ),
+          ]),
+      margin: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
+            bottomLeft: Radius.circular(16.0),
+            bottomRight: Radius.circular(16.0),
+          ),
+        ),
+        margin: const EdgeInsets.only(top: 24.0),
+        child: FilteredReads(),
       ),
     );
   }
