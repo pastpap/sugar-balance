@@ -8,10 +8,13 @@ class ReadEntity {
   final String id;
   final String note;
   final int value;
+  final String meal;
+  final String periodOfMeal;
   final DateTime date;
   final TimeOfDay time;
 
-  ReadEntity(this.value, this.id, this.note, this.date, this.time);
+  ReadEntity(this.value, this.id, this.note, this.meal, this.periodOfMeal,
+      this.date, this.time);
 
   @override
   int get hashCode =>
@@ -19,6 +22,8 @@ class ReadEntity {
       note.hashCode ^
       date.hashCode ^
       time.hashCode ^
+      meal.hashCode ^
+      periodOfMeal.hashCode ^
       id.hashCode;
 
   @override
@@ -30,6 +35,8 @@ class ReadEntity {
           time == other.time &&
           value == other.value &&
           note == other.note &&
+          meal == other.meal &&
+          periodOfMeal == other.periodOfMeal &&
           id == other.id;
 
   Map<String, Object> toJson() {
@@ -38,6 +45,8 @@ class ReadEntity {
       "date": date.toIso8601String(),
       "time": time.hour.toString() + ":" + time.minute.toString(),
       "note": note,
+      "meal": meal,
+      "periodOfMeal": periodOfMeal,
       "id": id,
     };
   }
@@ -52,6 +61,8 @@ class ReadEntity {
         json["value"] as int,
         json["id"] as String,
         json["note"] as String,
+        json["meal"] as String,
+        json["periodOfMeal"] as String,
         DateTime.parse(json["date"]),
         TimeOfDay(
             hour: int.parse(json["time"].toString().split(":")[0]),

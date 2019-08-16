@@ -13,7 +13,7 @@ class DetailsScreen extends StatelessWidget {
   final String id;
 
   DetailsScreen({Key key, @required this.id})
-      : super(key: key ?? Keys.todoDetailsScreen);
+      : super(key: key ?? Keys.readDetailsScreen);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class DetailsScreen extends StatelessWidget {
         final localizations = SugarBalanceLocalizations.of(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text(localizations.todoDetails),
+            title: Text(localizations.readDetails),
             actions: [
               IconButton(
                 tooltip: localizations.deleteTodo,
@@ -120,12 +120,15 @@ class DetailsScreen extends StatelessWidget {
                         builder: (context) {
                           return AddEditScreen(
                             key: Keys.editReadingScreen,
-                            onSave: (value, fromDate, fromTime, note) {
+                            onSave: (value, fromDate, fromTime, meal,
+                                periodOfMeal, note) {
                               readsBloc.dispatch(
                                 UpdateRead(
                                   read.copyWith(
                                       value: value,
                                       note: note,
+                                      meal: meal,
+                                      periodOfMeal: periodOfMeal,
                                       date: fromDate,
                                       time: fromTime),
                                 ),

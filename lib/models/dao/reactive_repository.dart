@@ -23,10 +23,10 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
         this._subject = BehaviorSubject<List<ReadEntity>>.seeded(seedValue);
 
   @override
-  Future<void> addNewRead(ReadEntity todo) async {
+  Future<void> addNewRead(ReadEntity read) async {
     _subject.add(List.unmodifiable([]
       ..addAll(_subject.value ?? [])
-      ..add(todo)));
+      ..add(read)));
 
     await _repository.saveReads(_subject.value);
   }

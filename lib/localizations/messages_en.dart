@@ -55,7 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "showCompleted": MessageLookupByLibrary.simpleMessage("Show Completed"),
         "stats": MessageLookupByLibrary.simpleMessage("Stats"),
         "todoDeleted": m0,
-        "todoDetails": MessageLookupByLibrary.simpleMessage("Todo Details"),
+        "readDetails": MessageLookupByLibrary.simpleMessage("Read Details"),
         "todos": MessageLookupByLibrary.simpleMessage("Todos"),
         "undo": MessageLookupByLibrary.simpleMessage("Undo")
       };

@@ -5,8 +5,8 @@ import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/models/reading.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 
-typedef OnSaveCallback = Function(
-    int task, DateTime date, TimeOfDay time, String note);
+typedef OnSaveCallback = Function(int task, DateTime date, TimeOfDay time,
+    String meal, String periodOfMeal, String note);
 
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
@@ -44,15 +44,24 @@ class _AddEditScreenState extends State<AddEditScreen> {
     'Before',
     'After',
   ];
-  String _meal = 'Breakfast';
-  String _period = 'Before';
+  String get meal => widget.isEditing ? widget.reading.meal : 'Breakfast';
+  String _meal;
+  String _periodOfMeal;
+  String get periodOfMeal =>
+      widget.isEditing ? widget.reading.periodOfMeal : 'Before';
 
   bool get isEditing => widget.isEditing;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final localizations = SugarBalanceLocalizations.of(context);
-
+    if (_meal == null) {
+      _meal = meal;
+    }
+    if (_periodOfMeal == null) {
+      _periodOfMeal = periodOfMeal;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -126,10 +135,10 @@ class _AddEditScreenState extends State<AddEditScreen> {
                       width: 24,
                     ),
                     DropdownButton<String>(
-                      value: _period,
+                      value: _periodOfMeal,
                       onChanged: (String newPeriod) {
                         setState(() {
-                          _period = newPeriod;
+                          _periodOfMeal = newPeriod;
                         });
                       },
                       items: _allPeriods
@@ -166,7 +175,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            widget.onSave(_value, _fromDate, _fromTime, _note);
+            widget.onSave(
+                _value, _fromDate, _fromTime, _meal, _periodOfMeal, _note);
             Navigator.pop(context);
           }
         },

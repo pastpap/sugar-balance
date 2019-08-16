@@ -123,9 +123,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get todoDetails => Intl.message(
-        'Todo Details',
-        name: 'todoDetails',
+  String get readDetails => Intl.message(
+        'Read Details',
+        name: 'readDetails',
         args: [],
         locale: locale.toString(),
       );

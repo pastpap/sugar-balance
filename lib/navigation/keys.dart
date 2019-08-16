@@ -50,7 +50,7 @@ class Keys {
   // Details Screen
   static final editTodoFab = const Key('__editTodoFab__');
   static final deleteTodoButton = const Key('__deleteTodoFab__');
-  static final todoDetailsScreen = const Key('__todoDetailsScreen__');
+  static final readDetailsScreen = const Key('__readDetailsScreen__');
   static final detailsTodoItemCheckbox = Key('DetailsTodo__Checkbox');
   static final detailsTodoItemTask = Key('DetailsTodo__Task');
   static final detailsTodoItemNote = Key('DetailsTodo__Note');
