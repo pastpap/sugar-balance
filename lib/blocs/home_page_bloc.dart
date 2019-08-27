@@ -2,6 +2,7 @@ import 'dart:async';
 
 class HomePageBloc {
   DateTime selectedDate = DateTime.now();
+  //final FilteredReadsBloc filteredReadsBloc;
 
   StreamController<DateTime> _dateStreamController =
       StreamController<DateTime>();

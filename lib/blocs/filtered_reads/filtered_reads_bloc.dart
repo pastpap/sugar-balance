@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
 import 'package:sugar_balance/models/models.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
+import 'package:sugar_balance/utils/date_utils.dart';
 
 class FilteredReadsBloc
     extends Bloc<FilteredReadingEvent, FilteredReadingState> {
@@ -23,7 +24,7 @@ class FilteredReadsBloc
     return readsBloc.currentState is ReadsLoaded
         ? FilteredReadLoaded(
             (readsBloc.currentState as ReadsLoaded).reads,
-            VisibilityFilter.all,
+            DateTime.now(),
           )
         : FilteredReadLoading();
   }
@@ -31,7 +32,7 @@ class FilteredReadsBloc
   @override
   Stream<FilteredReadingState> mapEventToState(
       FilteredReadingEvent event) async* {
-    if (event is UpdateFilter) {
+    if (event is UpdateForDateFilter) {
       yield* _mapUpdateFilterToState(event);
     } else if (event is UpdateReadings) {
       yield* _mapReadsUpdatedToState(event);
@@ -39,15 +40,15 @@ class FilteredReadsBloc
   }
 
   Stream<FilteredReadingState> _mapUpdateFilterToState(
-    UpdateFilter event,
+    UpdateForDateFilter event,
   ) async* {
     if (readsBloc.currentState is ReadsLoaded) {
       yield FilteredReadLoaded(
         _mapReadsToFilteredReads(
           (readsBloc.currentState as ReadsLoaded).reads,
-          event.filter,
+          event.forDateFilter,
         ),
-        event.filter,
+        event.forDateFilter,
       );
     }
   }
@@ -55,26 +56,20 @@ class FilteredReadsBloc
   Stream<FilteredReadingState> _mapReadsUpdatedToState(
     UpdateReadings event,
   ) async* {
-    final visibilityFilter = currentState is FilteredReadLoaded
-        ? (currentState as FilteredReadLoaded).activeFilter
-        : VisibilityFilter.all;
+    final forDateFilter = currentState is FilteredReadLoaded
+        ? (currentState as FilteredReadLoaded).forDate
+        : DateTime.now();
     yield FilteredReadLoaded(
       _mapReadsToFilteredReads(
         (readsBloc.currentState as ReadsLoaded).reads,
-        visibilityFilter,
+        forDateFilter,
       ),
-      visibilityFilter,
+      forDateFilter,
     );
   }
 
-  List<Reading> _mapReadsToFilteredReads(
-      List<Reading> reads, VisibilityFilter filter) {
-    return reads.where((read) {
-      if (filter == VisibilityFilter.all) {
-        return true;
-      }
-      return false;
-    }).toList();
+  List<Reading> _mapReadsToFilteredReads(List<Reading> reads, DateTime filter) {
+    return reads.where((read) => areDatesEqual(read.date, filter)).toList();
   }
 
   @override

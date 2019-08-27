@@ -14,13 +14,13 @@ class FilteredReadLoading extends FilteredReadingState {
 
 class FilteredReadLoaded extends FilteredReadingState {
   final List<Reading> filteredReads;
-  final VisibilityFilter activeFilter;
+  final DateTime forDate;
 
-  FilteredReadLoaded(this.filteredReads, this.activeFilter)
-      : super([filteredReads, activeFilter]);
+  FilteredReadLoaded(this.filteredReads, this.forDate)
+      : super([filteredReads, forDate]);
 
   @override
   String toString() {
-    return 'FilteredReadLoaded { filteredReads: $filteredReads, activeFilter: $activeFilter }';
+    return 'FilteredReadLoaded { filteredReads: $filteredReads, forDate: $forDate}';
   }
 }

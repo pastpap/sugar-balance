@@ -19,7 +19,7 @@ environment:
 dependencies:
   meta: ">=1.1.0 <2.0.0"
   equatable: ^0.2.0
-  flutter_bloc: ^0.20.0
+  flutter_bloc: ^0.20.1
   path_provider: ^0.4.1
   sliding_up_panel: ^0.3.4
   flutter:

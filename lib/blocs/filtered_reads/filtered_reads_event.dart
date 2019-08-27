@@ -7,15 +7,6 @@ abstract class FilteredReadingEvent extends Equatable {
   FilteredReadingEvent([List props = const []]) : super(props);
 }
 
-class UpdateFilter extends FilteredReadingEvent {
-  final VisibilityFilter filter;
-
-  UpdateFilter(this.filter) : super([filter]);
-
-  @override
-  String toString() => 'UpdateFilter { filter: $filter }';
-}
-
 class UpdateReadings extends FilteredReadingEvent {
   final List<Reading> readings;
 
@@ -23,4 +14,13 @@ class UpdateReadings extends FilteredReadingEvent {
 
   @override
   String toString() => 'UpdateReadings { readings: $readings }';
+}
+
+class UpdateForDateFilter extends FilteredReadingEvent {
+  final DateTime forDateFilter;
+
+  UpdateForDateFilter(this.forDateFilter) : super([forDateFilter]);
+
+  @override
+  String toString() => 'UpdateForDateFilter { forDateFilter: $forDateFilter }';
 }
