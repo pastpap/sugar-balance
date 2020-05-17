@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sugar_balance/blocs/filtered_reads/filtered_reads_bloc.dart';
+import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
 import 'package:sugar_balance/blocs/simple_bloc_delegate.dart';
 import 'package:sugar_balance/models/dao/reads_repository_simple.dart';
@@ -42,6 +43,7 @@ class SuggarBlanceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final readsBloc = BlocProvider.of<ReadsBloc>(context);
+    final homePageBloc = HomePageBloc();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -50,11 +52,14 @@ class SuggarBlanceApp extends StatelessWidget {
       localizationsDelegates: [SugarBalanceLocalizationsDelegate()],
       routes: {
         Routes.home: (context) {
-          return MultiBlocProvider(providers: [
+          return BlocProviderTree(blocProviders: [
             BlocProvider<FilteredReadsBloc>(
-              builder: (context) => FilteredReadsBloc(readsBloc: readsBloc),
+              builder: (context) => FilteredReadsBloc(
+                readsBloc: readsBloc,
+                homePageBloc: homePageBloc,
+              ),
             ),
-          ], child: MyHomePage());
+          ], child: MyHomePage(homePageBloc: homePageBloc));
         },
         Routes.addReading: (context) {
           return AddEditScreen(

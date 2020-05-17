@@ -4,10 +4,11 @@ class HomePageBloc {
   DateTime selectedDate = DateTime.now();
   //final FilteredReadsBloc filteredReadsBloc;
 
-  StreamController<DateTime> _dateStreamController =
-      StreamController<DateTime>();
+  final StreamController<DateTime> _dateStreamController =
+      StreamController.broadcast();
 
-  Stream<DateTime> get dateStream => _dateStreamController.stream;
+  Stream<DateTime> get dateStream =>
+      _dateStreamController.stream.asBroadcastStream();
   void addDate() {
     selectedDate = selectedDate.add(Duration(days: 1));
     _dateStreamController.sink.add(selectedDate);

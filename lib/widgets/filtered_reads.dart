@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
+import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/navigation/flutter_read_keys.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/screens/details_screen.dart';
@@ -18,9 +18,11 @@ class FilteredReads extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final readsBloc = BlocProvider.of<ReadsBloc>(context);
+    final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
     final localizations = SugarBalanceLocalizations.of(context);
 
-    return BlocBuilder<FilteredReadsBloc, FilteredReadingState>(
+    return BlocBuilder(
+      bloc: filteredReadsBloc,
       builder: (context, state) {
         if (state is FilteredReadLoading) {
           return LoadingIndicator(key: Keys.readsLoading);

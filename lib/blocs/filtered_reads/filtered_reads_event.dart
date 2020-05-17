@@ -4,7 +4,7 @@ import 'package:sugar_balance/models/models.dart';
 
 @immutable
 abstract class FilteredReadingEvent extends Equatable {
-  FilteredReadingEvent([List props = const []]) : super(props);
+  FilteredReadingEvent([List props = const []]) : super();
 }
 
 class UpdateReadings extends FilteredReadingEvent {
@@ -14,6 +14,9 @@ class UpdateReadings extends FilteredReadingEvent {
 
   @override
   String toString() => 'UpdateReadings { readings: $readings }';
+
+  @override
+  List<Object> get props => [readings];
 }
 
 class UpdateForDateFilter extends FilteredReadingEvent {
@@ -23,4 +26,7 @@ class UpdateForDateFilter extends FilteredReadingEvent {
 
   @override
   String toString() => 'UpdateForDateFilter { forDateFilter: $forDateFilter }';
+
+  // TODO: implement props
+  List<Object> get props => [forDateFilter];
 }

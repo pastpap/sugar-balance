@@ -1,22 +1,28 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/models/models.dart';
+import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
+import 'package:sugar_balance/models/models.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
 
 class FilteredReadsBloc
     extends Bloc<FilteredReadingEvent, FilteredReadingState> {
   final ReadsBloc readsBloc;
+  final HomePageBloc homePageBloc;
   StreamSubscription readsSubscription;
+  StreamSubscription homePageBlockSubscription;
 
-  FilteredReadsBloc({@required this.readsBloc}) {
+  FilteredReadsBloc({@required this.readsBloc, @required this.homePageBloc}) {
     readsSubscription = readsBloc.state.listen((state) {
       if (state is ReadsLoaded) {
         dispatch(UpdateReadings((readsBloc.currentState as ReadsLoaded).reads));
       }
     });
+    homePageBlockSubscription = homePageBloc.dateStream.listen(
+        (date) => dispatch(UpdateForDateFilter(homePageBloc.selectedDate)));
   }
 
   @override
@@ -75,6 +81,7 @@ class FilteredReadsBloc
   @override
   void dispose() {
     readsSubscription.cancel();
+    homePageBlockSubscription.cancel();
     super.dispose();
   }
 }

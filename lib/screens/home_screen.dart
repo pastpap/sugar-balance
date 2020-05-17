@@ -4,12 +4,15 @@ import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/components/title_bar.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/navigation/routes.dart';
+import 'package:sugar_balance/themes/colors.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
 import 'package:sugar_balance/widgets/filtered_reads.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
-import 'package:sugar_balance/themes/colors.dart';
 
 class MyHomePage extends StatefulWidget {
+  final HomePageBloc homePageBloc;
+
+  const MyHomePage({Key key, this.homePageBloc}) : super(key: key);
   @override
   MyHomePageState createState() => MyHomePageState();
 }
@@ -21,7 +24,7 @@ class MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    _homePageBloc = HomePageBloc();
+    _homePageBloc = widget.homePageBloc;
     _iconAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     super.initState();

@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sugar_balance/blocs/reads/reads.dart';
 import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/navigation/flutter_read_keys.dart';
 import 'package:sugar_balance/navigation/keys.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
 import 'package:sugar_balance/screens/add_edit_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -18,7 +18,8 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final readsBloc = BlocProvider.of<ReadsBloc>(context);
-    return BlocBuilder<ReadsBloc, ReadsState>(
+    return BlocBuilder(
+      bloc: readsBloc,
       builder: (context, state) {
         final read = (state as ReadsLoaded)
             .reads

@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class HomeState extends Equatable {
-  HomeState([List props = const <dynamic>[]]) : super(props);
+  HomeState([List props = const <dynamic>[]]) : super();
 }
 
 class InitialHomeState extends HomeState {
@@ -13,26 +13,21 @@ class InitialHomeState extends HomeState {
   String toString() {
     return 'InitialHomeState: {initialDate: $initialDate.toIso8601String() }';
   }
+
+  @override
+  List<Object> get props => [initialDate];
 }
 
-class IcrementDateHomeState extends HomeState {
-  final DateTime incrementDate;
+class ChangedHomeState extends HomeState {
+  final DateTime newModifiedDate;
 
-  IcrementDateHomeState(this.incrementDate) : super([incrementDate]);
+  ChangedHomeState(this.newModifiedDate) : super([newModifiedDate]);
 
   @override
   String toString() {
-    return 'IcrementDateHomeState: {incrementDate: $incrementDate.toIso8601String() }';
+    return 'ChangedHomeState: {newModifiedDate: $newModifiedDate.toIso8601String() }';
   }
-}
-
-class DecrementDateHomeState extends HomeState {
-  final DateTime decrementDate;
-
-  DecrementDateHomeState(this.decrementDate) : super([decrementDate]);
 
   @override
-  String toString() {
-    return 'IcrementDateHomeState: {decrementDate: $decrementDate.toIso8601String()}';
-  }
+  List<Object> get props => [newModifiedDate];
 }

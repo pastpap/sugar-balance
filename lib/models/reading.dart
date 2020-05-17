@@ -18,8 +18,7 @@ class Reading extends Equatable {
       {String note = '', String id})
       : this.note = note ?? '',
         this.id = id ?? Uuid().generateV4(),
-        super([id, value, date, time, note, meal, periodOfMeal]);
-
+        super();
   Reading copyWith(
       {String id,
       String note,
@@ -53,4 +52,7 @@ class Reading extends Equatable {
       id: entity.id ?? Uuid().generateV4(),
     );
   }
+
+  @override
+  List<Object> get props => [id, value, date, time, note, meal, periodOfMeal];
 }

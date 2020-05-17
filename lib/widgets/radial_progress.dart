@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class RadialProgress extends StatefulWidget {
@@ -48,6 +50,8 @@ class _RadialProgressState extends State<RadialProgress>
 
   @override
   Widget build(BuildContext context) {
+    final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
+
     return CustomPaint(
       child: Container(
         height: 200,
@@ -59,7 +63,7 @@ class _RadialProgressState extends State<RadialProgress>
           child: Column(
             children: <Widget>[
               Text(
-                'Level',
+                'Top',
                 style: TextStyle(fontSize: 24.0, letterSpacing: 1.5),
               ),
               SizedBox(
@@ -80,7 +84,7 @@ class _RadialProgressState extends State<RadialProgress>
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
               ),
               Text(
-                'UNITS',
+                'mg/dL',
                 style: TextStyle(
                     fontSize: 14.0, color: Colors.blue, letterSpacing: 1.5),
               ),
