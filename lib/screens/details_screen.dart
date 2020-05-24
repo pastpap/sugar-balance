@@ -121,11 +121,12 @@ class DetailsScreen extends StatelessWidget {
                         builder: (context) {
                           return AddEditScreen(
                             key: Keys.editReadingScreen,
-                            onSave: (value, fromDate, fromTime, meal,
+                            onSave: (id, value, fromDate, fromTime, meal,
                                 periodOfMeal, note) {
                               readsBloc.dispatch(
                                 UpdateRead(
                                   read.copyWith(
+                                      id: id,
                                       value: value,
                                       note: note,
                                       meal: meal,

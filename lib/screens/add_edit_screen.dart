@@ -5,8 +5,8 @@ import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/models/reading.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 
-typedef OnSaveCallback = Function(int task, DateTime date, TimeOfDay time,
-    String meal, String periodOfMeal, String note);
+typedef OnSaveCallback = Function(String id, int task, DateTime date,
+    TimeOfDay time, String meal, String periodOfMeal, String note);
 
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
@@ -26,7 +26,7 @@ class AddEditScreen extends StatefulWidget {
 
 class _AddEditScreenState extends State<AddEditScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String _id;
   int _value;
   String _note;
   DateTime _fromDate = DateTime.now();
@@ -79,7 +79,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
-                style: textTheme.headline,
+                style: textTheme.headline5,
                 decoration: InputDecoration(
                   labelText: "Blood sugar value",
                   hintText: "Add reading value", //localizations.newTodoHint,
@@ -176,7 +176,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             widget.onSave(
-                _value, _fromDate, _fromTime, _meal, _periodOfMeal, _note);
+                _id, _value, _fromDate, _fromTime, _meal, _periodOfMeal, _note);
             Navigator.pop(context);
           }
         },

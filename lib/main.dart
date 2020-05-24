@@ -64,10 +64,10 @@ class SuggarBlanceApp extends StatelessWidget {
         Routes.addReading: (context) {
           return AddEditScreen(
             key: Keys.addReadingScreen,
-            onSave: (value, date, time, meal, periodOfMeal, note) {
+            onSave: (id, value, date, time, meal, periodOfMeal, note) {
               readsBloc.dispatch(
-                AddRead(
-                    Reading(value, date, time, meal, periodOfMeal, note: note)),
+                AddRead(Reading(value, date, time, meal, periodOfMeal,
+                    note: note, id: id)),
               );
             },
             isEditing: false,
