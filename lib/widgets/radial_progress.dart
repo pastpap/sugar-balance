@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class RadialProgress extends StatefulWidget {
-  final double goalCompleted = 0.7;
+  final double highestOfToday;
+
+  RadialProgress({Key key, this.highestOfToday}) : super(key: key);
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -14,32 +14,35 @@ class _RadialProgressState extends State<RadialProgress>
     with SingleTickerProviderStateMixin {
   AnimationController _radialProgressAnimationController;
   Animation<double> _progressAnimation;
-
+  final double maximumLimit = 500;
+  Tween<double> _valueTween;
   final Duration fadeInDuration = Duration(milliseconds: 500);
-  final Duration fillDuration = Duration(seconds: 2);
+  final Duration fillDuration = Duration(seconds: 1);
 
   double progress = 0;
 
   @override
   void initState() {
-    super.initState();
     _radialProgressAnimationController = AnimationController(
       vsync: this,
       duration: fillDuration,
     );
-    _progressAnimation = Tween(
+    _valueTween = Tween(
       begin: 0.0,
       end: 360.0,
-    ).animate(CurvedAnimation(
+    );
+    _progressAnimation = _valueTween.animate(CurvedAnimation(
       parent: _radialProgressAnimationController,
       curve: Curves.easeIn,
     ))
       ..addListener(() {
         setState(() {
-          progress = widget.goalCompleted * _progressAnimation.value;
+          progress =
+              (widget.highestOfToday / maximumLimit) * _progressAnimation.value;
         });
       });
     _radialProgressAnimationController.forward();
+    super.initState();
   }
 
   @override
@@ -50,15 +53,13 @@ class _RadialProgressState extends State<RadialProgress>
 
   @override
   Widget build(BuildContext context) {
-    final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
-
     return CustomPaint(
       child: Container(
         height: 200,
         width: 200,
         padding: EdgeInsets.symmetric(vertical: 40.0),
         child: AnimatedOpacity(
-          opacity: progress > 30 ? 1.0 : 0.0,
+          opacity: progress > 30 ? 1.0 : 0.5,
           duration: fadeInDuration,
           child: Column(
             children: <Widget>[
@@ -80,7 +81,7 @@ class _RadialProgressState extends State<RadialProgress>
                 height: 10.0,
               ),
               Text(
-                '130',
+                widget.highestOfToday.toString(),
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -94,6 +95,30 @@ class _RadialProgressState extends State<RadialProgress>
       ),
       painter: RadialPainter(progress),
     );
+  }
+
+  @override
+  void didUpdateWidget(RadialProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (this.widget.highestOfToday != oldWidget.highestOfToday) {
+      // Try to start with the previous tween's end value. This ensures that we
+      // have a smooth transition from where the previous animation reached.
+      double beginValue =
+          this._valueTween?.evaluate(this._radialProgressAnimationController) ??
+              oldWidget?.highestOfToday ??
+              0;
+
+      // Update the value tween.
+      this._valueTween = Tween<double>(
+        begin: beginValue,
+        end: this.widget.highestOfToday ?? 1,
+      );
+
+      this._radialProgressAnimationController
+        ..value = 0
+        ..forward();
+    }
   }
 }
 
@@ -115,7 +140,7 @@ class RadialPainter extends CustomPainter {
     Paint progressPaint = Paint()
       ..color = Colors.blue
       ..shader = LinearGradient(
-        colors: [Colors.red, Colors.purple, Colors.purpleAccent],
+        colors: [Colors.red, Colors.purple, Colors.blueAccent],
       ).createShader(
         Rect.fromCircle(
           center: offset,

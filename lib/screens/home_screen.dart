@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
 import 'package:sugar_balance/blocs/home_page_bloc.dart';
 import 'package:sugar_balance/components/title_bar.dart';
+import 'package:sugar_balance/models/models.dart';
+import 'package:sugar_balance/navigation/flutter_read_keys.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/navigation/routes.dart';
 import 'package:sugar_balance/themes/colors.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
 import 'package:sugar_balance/widgets/filtered_reads.dart';
+import 'package:sugar_balance/widgets/loading_indicator.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -39,98 +44,115 @@ class MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SlidingUpPanel(
-        renderPanelSheet: false,
-        color: Colors.blueAccent,
-        collapsed: _floatingCollapsed(),
-        panel: _floatingPanel(),
-        body: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Stack(
+    final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
+
+    return BlocBuilder(
+        bloc: filteredReadsBloc,
+        builder: (context, state) {
+          if (state is FilteredReadLoading) {
+            return LoadingIndicator(key: Keys.readsLoading);
+          } else if (state is FilteredReadLoaded) {
+            final reads = state.filteredReads;
+            return Scaffold(
+              body: SlidingUpPanel(
+                renderPanelSheet: false,
+                color: Colors.blueAccent,
+                collapsed: _floatingCollapsed(),
+                panel: _floatingPanel(),
+                body: Stack(
                   children: <Widget>[
-                    TopBar(),
-                    Positioned(
-                      top: 60.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                              size: 35.0,
-                            ),
-                            onPressed: () {
-                              _homePageBloc.subtractDate();
-                            },
-                          ),
-                          StreamBuilder(
-                            stream: _homePageBloc.dateStream,
-                            initialData: _homePageBloc.selectedDate,
-                            builder: (context, snapshot) {
-                              return Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      formatterDayOfWeek.format(snapshot.data),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24.0,
-                                          color: Colors.white,
-                                          letterSpacing: 1.2),
+                    Column(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            TopBar(),
+                            Positioned(
+                              top: 60.0,
+                              left: 0.0,
+                              right: 0.0,
+                              child: Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white,
+                                      size: 35.0,
                                     ),
-                                    Text(
-                                      formatterDate.format(snapshot.data),
-                                      style: TextStyle(
-                                        fontSize: 20.0,
+                                    onPressed: () {
+                                      _homePageBloc.subtractDate();
+                                    },
+                                  ),
+                                  StreamBuilder(
+                                    stream: _homePageBloc.dateStream,
+                                    initialData: _homePageBloc.selectedDate,
+                                    builder: (context, snapshot) {
+                                      return Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              formatterDayOfWeek
+                                                  .format(snapshot.data),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 24.0,
+                                                  color: Colors.white,
+                                                  letterSpacing: 1.2),
+                                            ),
+                                            Text(
+                                              formatterDate
+                                                  .format(snapshot.data),
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.white,
+                                                letterSpacing: 1.3,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Transform.rotate(
+                                    angle: 135.0,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
                                         color: Colors.white,
-                                        letterSpacing: 1.3,
+                                        size: 35.0,
                                       ),
+                                      onPressed: () {
+                                        _homePageBloc.addDate();
+                                      },
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                          Transform.rotate(
-                            angle: 135.0,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
-                                size: 35.0,
+                                  )
+                                ],
                               ),
-                              onPressed: () {
-                                _homePageBloc.addDate();
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                            )
+                          ],
+                        ),
+                        RadialProgress(
+                          highestOfToday: getHighestReadToday(reads),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                RadialProgress(),
-              ],
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0),
-        child: FloatingActionButton(
-          key: Keys.addReading,
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.pushNamed(context, Routes.addReading);
-          },
-        ),
-      ),
-    );
+              ),
+              floatingActionButton: Padding(
+                padding: const EdgeInsets.only(bottom: 80.0),
+                child: FloatingActionButton(
+                  key: Keys.addReading,
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.addReading);
+                  },
+                ),
+              ),
+            );
+          } else {
+            return Container(key: FlutterReadsKeys.filteredReadsEmptyContainer);
+          }
+        });
   }
 
   Widget _floatingCollapsed() {
@@ -176,6 +198,16 @@ class MyHomePageState extends State<MyHomePage>
         child: FilteredReads(),
       ),
     );
+  }
+
+  double getHighestReadToday(List<Reading> filteredReads) {
+    double result = 0;
+    filteredReads.forEach((element) {
+      if (result < element.value) {
+        result = element.value.toDouble();
+      }
+    });
+    return result;
   }
 }
 
