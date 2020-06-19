@@ -13,6 +13,7 @@ import 'package:sugar_balance/utils/date_utils.dart';
 import 'package:sugar_balance/widgets/filtered_reads.dart';
 import 'package:sugar_balance/widgets/loading_indicator.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
+import 'package:sugar_balance/widgets/readings_graph.dart';
 
 class MyHomePage extends StatefulWidget {
   final HomePageBloc homePageBloc;
@@ -130,8 +131,29 @@ class MyHomePageState extends State<MyHomePage>
                             )
                           ],
                         ),
-                        RadialProgress(
-                          highestOfToday: getHighestReadToday(reads),
+                        Column(
+                          children: <Widget>[
+                            RadialProgress(
+                              highestOfToday: getHighestReadToday(reads),
+                            ),
+                            Container(
+                              height: 300,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    20.0, 40.0, 20.0, 40.0),
+                                child: reads.isEmpty
+                                    ? Icon(
+                                        Icons.insert_chart,
+                                        size: 200.0,
+                                        color: Colors.black12,
+                                      )
+                                    : ReadingsGraph(
+                                        reads: reads,
+                                        animate: true,
+                                      ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -165,7 +187,7 @@ class MyHomePageState extends State<MyHomePage>
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Center(
         child: Text(
-          "Swipe up for today's list",
+          "Swipe up for today's readings",
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
