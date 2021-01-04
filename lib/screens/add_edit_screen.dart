@@ -58,6 +58,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final localizations = SugarBalanceLocalizations.of(context);
+    _fromDate = decideDateValueBasedOnAction();
+    _fromTime = decideTimeValueBasedOnAction();
     if (_meal == null) {
       _meal = meal;
     }
@@ -95,12 +97,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ),
               DateTimePicker(
                 labelText: 'From',
-                selectedDate: isEditing && !_fromDateChanged
-                    ? widget.reading.date
-                    : _fromDate,
-                selectedTime: isEditing && !_fromTimeChanged
-                    ? widget.reading.time
-                    : _fromTime,
+                selectedDate: _fromDate,
+                selectedTime: _fromTime,
                 selectDate: (DateTime date) {
                   setState(() {
                     _fromDate = date;
@@ -190,5 +188,29 @@ class _AddEditScreenState extends State<AddEditScreen> {
         },
       ),
     );
+  }
+
+  DateTime decideDateValueBasedOnAction() {
+    if (isEditing) {
+      if (_fromDateChanged) {
+        return _fromDate;
+      } else {
+        return widget.reading.date;
+      }
+    } else {
+      return _fromDate;
+    }
+  }
+
+  TimeOfDay decideTimeValueBasedOnAction() {
+    if (isEditing) {
+      if (_fromTimeChanged) {
+        return _fromTime;
+      } else {
+        return widget.reading.time;
+      }
+    } else {
+      return _fromTime;
+    }
   }
 }
