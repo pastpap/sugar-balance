@@ -51,6 +51,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
       widget.isEditing ? widget.reading.periodOfMeal : 'Before';
 
   bool get isEditing => widget.isEditing;
+  bool _fromDateChanged = false;
+  bool _fromTimeChanged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,16 +95,22 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ),
               DateTimePicker(
                 labelText: 'From',
-                selectedDate: isEditing ? widget.reading.date : _fromDate,
-                selectedTime: isEditing ? widget.reading.time : _fromTime,
+                selectedDate: isEditing && !_fromDateChanged
+                    ? widget.reading.date
+                    : _fromDate,
+                selectedTime: isEditing && !_fromTimeChanged
+                    ? widget.reading.time
+                    : _fromTime,
                 selectDate: (DateTime date) {
                   setState(() {
                     _fromDate = date;
+                    _fromDateChanged = true;
                   });
                 },
                 selectTime: (TimeOfDay time) {
                   setState(() {
                     _fromTime = time;
+                    _fromTimeChanged = true;
                   });
                 },
               ),
