@@ -27,17 +27,19 @@ class ReadingsGraph extends StatelessWidget {
     );
   }
 
-  List<charts.Series<TimeSeriesReads, DateTime>> manageReadsData() {
-    final data = new List<TimeSeriesReads>();
+  List<charts.Series<TimeSeriesRead, DateTime>> manageReadsData() {
+    final data = new List<TimeSeriesRead>();
     reads.forEach((element) {
-      data.add(new TimeSeriesReads(element.date, element.value));
+      final elementDate = new DateTime(element.date.year, element.date.month,
+          element.date.day, element.time.hour, element.time.minute);
+      data.add(new TimeSeriesRead(elementDate, element.value));
     });
     return [
-      new charts.Series<TimeSeriesReads, DateTime>(
+      new charts.Series<TimeSeriesRead, DateTime>(
         id: 'ReadsChart',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesReads sales, _) => sales.time,
-        measureFn: (TimeSeriesReads sales, _) => sales.readValue,
+        domainFn: (TimeSeriesRead read, _) => read.time,
+        measureFn: (TimeSeriesRead read, _) => read.readValue,
         data: data,
       )
     ];
@@ -45,9 +47,9 @@ class ReadingsGraph extends StatelessWidget {
 }
 
 /// Sample time series data type.
-class TimeSeriesReads {
+class TimeSeriesRead {
   final DateTime time;
   final int readValue;
 
-  TimeSeriesReads(this.time, this.readValue);
+  TimeSeriesRead(this.time, this.readValue);
 }
