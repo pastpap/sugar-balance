@@ -40,7 +40,7 @@ class ReadItem extends StatelessWidget {
               reading.time.format(context),
               style: Theme.of(context).textTheme.subhead,
             ),
-            reading.note.isNotEmpty
+            reading.note != null && reading.note.isNotEmpty
                 ? Text(
                     reading.note,
                     key: Keys.readItemNote(reading.id),
