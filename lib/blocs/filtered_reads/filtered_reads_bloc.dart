@@ -75,7 +75,11 @@ class FilteredReadsBloc
   }
 
   List<Reading> _mapReadsToFilteredReads(List<Reading> reads, DateTime filter) {
-    return reads.where((read) => areDatesEqual(read.date, filter)).toList();
+    List<Reading> result =
+        reads.where((read) => areDatesEqual(read.date, filter)).toList();
+    result.sort((a, b) => dateTimeFromDateTimeAndTimeOfDay(a.date, a.time)
+        .compareTo(dateTimeFromDateTimeAndTimeOfDay(b.date, b.time)));
+    return result;
   }
 
   @override
