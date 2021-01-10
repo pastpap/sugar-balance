@@ -10,6 +10,7 @@ import 'package:sugar_balance/navigation/keys.dart';
 import 'package:sugar_balance/navigation/routes.dart';
 import 'package:sugar_balance/themes/colors.dart';
 import 'package:sugar_balance/utils/date_utils.dart';
+import 'package:sugar_balance/utils/screen_sizes.dart';
 import 'package:sugar_balance/widgets/filtered_reads.dart';
 import 'package:sugar_balance/widgets/loading_indicator.dart';
 import 'package:sugar_balance/widgets/radial_progress.dart';
@@ -46,7 +47,7 @@ class MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
-
+    bool bigPhone = MediaQuery.of(context).size.height > smallPhoneHeight;
     return BlocBuilder(
         bloc: filteredReadsBloc,
         builder: (context, state) {
@@ -131,30 +132,18 @@ class MyHomePageState extends State<MyHomePage>
                             )
                           ],
                         ),
-                        Column(
-                          children: <Widget>[
-                            RadialProgress(
-                              highestOfToday: getHighestReadToday(reads),
-                            ),
-                            Container(
-                              height: 300,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    20.0, 40.0, 20.0, 40.0),
-                                child: reads.isEmpty
-                                    ? Icon(
-                                        Icons.insert_chart,
-                                        size: 200.0,
-                                        color: Colors.black12,
-                                      )
-                                    : ReadingsGraph(
-                                        reads: reads,
-                                        animate: true,
-                                      ),
+                        bigPhone
+                            ? buildRadialProgressAndChartColumn(reads)
+                            : Container(
+                                height: 250,
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: buildRadialProgressAndChartColumn(
+                                        reads),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ],
@@ -175,6 +164,32 @@ class MyHomePageState extends State<MyHomePage>
             return Container(key: FlutterReadsKeys.filteredReadsEmptyContainer);
           }
         });
+  }
+
+  Column buildRadialProgressAndChartColumn(List<Reading> reads) {
+    return Column(
+      children: <Widget>[
+        RadialProgress(
+          highestOfToday: getHighestReadToday(reads),
+        ),
+        Container(
+          height: 300,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 40.0),
+            child: reads.isEmpty
+                ? Icon(
+                    Icons.insert_chart,
+                    size: 200.0,
+                    color: Colors.black12,
+                  )
+                : ReadingsGraph(
+                    reads: reads,
+                    animate: true,
+                  ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _floatingCollapsed() {
