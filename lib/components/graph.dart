@@ -5,8 +5,8 @@ import 'fitness_data.dart';
 
 class Graph extends StatelessWidget {
   final double height;
-  final List<GraphData> values;
-  final AnimationController animationController;
+  final List<GraphData>? values;
+  final AnimationController? animationController;
 
   Graph({this.animationController, this.height = 120, this.values});
 
@@ -17,13 +17,13 @@ class Graph extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 32.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBars(values),
+        children: _buildBars(values!),
       ),
     );
   }
 
   _buildBars(List<GraphData> values) {
-    List<GraphBar> _bars = List();
+    List<GraphBar> _bars = [];
     GraphData _maxGraphData = values.reduce(
         (current, next) => (next.compareTo(current) >= 1) ? next : current);
     values.forEach((graphData) {
@@ -37,7 +37,7 @@ class Graph extends StatelessWidget {
 
 class GraphBar extends StatefulWidget {
   final double height, percentage;
-  final AnimationController _graphBarAnimationController;
+  final AnimationController? _graphBarAnimationController;
 
   GraphBar(this.height, this.percentage, this._graphBarAnimationController);
 
@@ -46,13 +46,13 @@ class GraphBar extends StatefulWidget {
 }
 
 class _GraphBarState extends State<GraphBar> {
-  Animation<double> _percentageAnimation;
+  late Animation<double> _percentageAnimation;
 
   @override
   void initState() {
     super.initState();
     _percentageAnimation = Tween<double>(begin: 0, end: widget.percentage)
-        .animate(widget._graphBarAnimationController);
+        .animate(widget._graphBarAnimationController!);
     _percentageAnimation.addListener(() {
       setState(() {});
     });

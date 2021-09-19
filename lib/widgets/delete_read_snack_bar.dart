@@ -6,10 +6,10 @@ class DeleteReadSnackBar extends SnackBar {
   final SugarBalanceLocalizations localizations;
 
   DeleteReadSnackBar({
-    Key key,
-    @required Reading reading,
-    @required VoidCallback onUndo,
-    @required this.localizations,
+    Key? key,
+    required Reading reading,
+    required VoidCallback onUndo,
+    required this.localizations,
   }) : super(
           key: key,
           content: Text(

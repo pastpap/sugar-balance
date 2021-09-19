@@ -5,18 +5,18 @@ import 'package:sugar_balance/localizations/localization.dart';
 import 'package:sugar_balance/models/reading.dart';
 import 'package:sugar_balance/navigation/keys.dart';
 
-typedef OnSaveCallback = Function(String id, int task, DateTime date,
-    TimeOfDay time, String meal, String periodOfMeal, String note);
+typedef OnSaveCallback = Function(String? id, int? task, DateTime date,
+    TimeOfDay time, String? meal, String? periodOfMeal, String? note);
 
 class AddEditScreen extends StatefulWidget {
   final bool isEditing;
   final OnSaveCallback onSave;
-  final Reading reading;
+  final Reading? reading;
 
   AddEditScreen({
-    Key key,
-    @required this.onSave,
-    @required this.isEditing,
+    Key? key,
+    required this.onSave,
+    required this.isEditing,
     this.reading,
   }) : super(key: key ?? Keys.addReadingScreen);
 
@@ -26,9 +26,9 @@ class AddEditScreen extends StatefulWidget {
 
 class _AddEditScreenState extends State<AddEditScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _id;
-  int _value;
-  String _note;
+  String? _id;
+  int? _value;
+  String? _note;
   DateTime _fromDate = DateTime.now();
   TimeOfDay _fromTime =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
@@ -44,11 +44,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
     'Before',
     'After',
   ];
-  String get meal => widget.isEditing ? widget.reading.meal : 'Breakfast';
-  String _meal;
-  String _periodOfMeal;
-  String get periodOfMeal =>
-      widget.isEditing ? widget.reading.periodOfMeal : 'Before';
+  String? get meal => widget.isEditing ? widget.reading!.meal : 'Breakfast';
+  String? _meal;
+  String? _periodOfMeal;
+  String? get periodOfMeal =>
+      widget.isEditing ? widget.reading!.periodOfMeal : 'Before';
 
   bool get isEditing => widget.isEditing;
   bool _fromDateChanged = false;
@@ -69,7 +69,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEditing ? localizations.editReading : localizations.addReading,
+          isEditing ? localizations!.editReading : localizations!.addReading,
         ),
       ),
       body: Padding(
@@ -79,7 +79,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: isEditing ? widget.reading.value.toString() : '0',
+                initialValue: isEditing ? widget.reading!.value.toString() : '0',
                 key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
@@ -89,11 +89,11 @@ class _AddEditScreenState extends State<AddEditScreen> {
                   hintText: "Add reading value", //localizations.newTodoHint,
                 ),
                 validator: (val) {
-                  return val.trim().isEmpty
+                  return val!.trim().isEmpty
                       ? localizations.emptyBloodLevel
                       : null;
                 },
-                onSaved: (value) => _value = int.parse(value),
+                onSaved: (value) => _value = int.parse(value!),
               ),
               DateTimePicker(
                 labelText: 'From',
@@ -124,7 +124,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                   children: <Widget>[
                     DropdownButton<String>(
                       value: _meal,
-                      onChanged: (String newValue) {
+                      onChanged: (String? newValue) {
                         setState(() {
                           _meal = newValue;
                         });
@@ -142,7 +142,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                     ),
                     DropdownButton<String>(
                       value: _periodOfMeal,
-                      onChanged: (String newPeriod) {
+                      onChanged: (String? newPeriod) {
                         setState(() {
                           _periodOfMeal = newPeriod;
                         });
@@ -159,10 +159,10 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 ),
               ),
               TextFormField(
-                initialValue: isEditing ? widget.reading.note : '',
+                initialValue: isEditing ? widget.reading!.note : '',
                 key: Keys.noteField,
                 maxLines: 10,
-                style: textTheme.subhead,
+                style: textTheme.subtitle1,
                 decoration: InputDecoration(
                   hintText:
                       "Add description of meal before reading", //localizations.notesHint,
@@ -179,8 +179,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
             isEditing ? localizations.saveChanges : localizations.addReading,
         child: Icon(isEditing ? Icons.check : Icons.add),
         onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
             widget.onSave(_id, _value, _fromDate, _fromTime, _meal,
                 _periodOfMeal, _note != null ? _note : '');
             Navigator.pop(context);
@@ -195,7 +195,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
       if (_fromDateChanged) {
         return _fromDate;
       } else {
-        return widget.reading.date;
+        return widget.reading!.date;
       }
     } else {
       return _fromDate;
@@ -207,7 +207,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
       if (_fromTimeChanged) {
         return _fromTime;
       } else {
-        return widget.reading.time;
+        return widget.reading!.time;
       }
     } else {
       return _fromTime;

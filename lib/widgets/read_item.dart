@@ -9,10 +9,10 @@ class ReadItem extends StatelessWidget {
   final Reading reading;
 
   ReadItem({
-    Key key,
-    @required this.onDismissed,
-    @required this.onTap,
-    @required this.reading,
+    Key? key,
+    required this.onDismissed,
+    required this.onTap,
+    required this.reading,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class ReadItem extends StatelessWidget {
             child: Text(
               reading.value.toString(),
               key: Keys.readItemValue(reading.id),
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
         ),
@@ -38,17 +38,18 @@ class ReadItem extends StatelessWidget {
           children: <Widget>[
             Text(
               reading.time.format(context),
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.headline1,
             ),
-            reading.note != null && reading.note.isNotEmpty
-                ? Text(
-                    reading.note,
-                    key: Keys.readItemNote(reading.id),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.subhead,
-                  )
-                : null,
+            if (reading.note.isNotEmpty)
+              Text(
+                reading.note,
+                key: Keys.readItemNote(reading.id),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headline1,
+              )
+            else
+              Text(''),
           ],
         ),
       ),

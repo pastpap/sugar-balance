@@ -21,7 +21,7 @@ abstract class ReactiveReadsRepository {
 
   Future<void> deleteRead(List<String> idList);
 
-  Stream<List<ReadEntity>> reads();
+  Stream<List<ReadEntity>?> reads();
 
   Future<void> updateRead(ReadEntity read);
 }

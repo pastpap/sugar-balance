@@ -7,7 +7,7 @@ import 'input_drop_down.dart';
 
 class DateTimePicker extends StatelessWidget {
   const DateTimePicker({
-    Key key,
+    Key? key,
     this.labelText,
     this.selectedDate,
     this.selectedTime,
@@ -15,33 +15,33 @@ class DateTimePicker extends StatelessWidget {
     this.selectTime,
   }) : super(key: key);
 
-  final String labelText;
-  final DateTime selectedDate;
-  final TimeOfDay selectedTime;
-  final ValueChanged<DateTime> selectDate;
-  final ValueChanged<TimeOfDay> selectTime;
+  final String? labelText;
+  final DateTime? selectedDate;
+  final TimeOfDay? selectedTime;
+  final ValueChanged<DateTime>? selectDate;
+  final ValueChanged<TimeOfDay>? selectTime;
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: selectedDate!,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate) selectDate(picked);
+    if (picked != null && picked != selectedDate) selectDate!(picked);
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedTime,
+      initialTime: selectedTime!,
     );
-    if (picked != null && picked != selectedTime) selectTime(picked);
+    if (picked != null && picked != selectedTime) selectTime!(picked);
   }
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.title;
+    final TextStyle? valueStyle = Theme.of(context).textTheme.subtitle1;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
@@ -49,7 +49,7 @@ class DateTimePicker extends StatelessWidget {
           flex: 4,
           child: InputDropdown(
             labelText: labelText,
-            valueText: DateFormat.yMMMd().format(selectedDate),
+            valueText: DateFormat.yMMMd().format(selectedDate!),
             valueStyle: valueStyle,
             onPressed: () {
               _selectDate(context);
@@ -60,7 +60,7 @@ class DateTimePicker extends StatelessWidget {
         Expanded(
           flex: 3,
           child: InputDropdown(
-            valueText: selectedTime.format(context),
+            valueText: selectedTime!.format(context),
             valueStyle: valueStyle,
             onPressed: () {
               _selectTime(context);

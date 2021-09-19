@@ -20,7 +20,7 @@ class SugarBalanceLocalizations {
     });
   }
 
-  static SugarBalanceLocalizations of(BuildContext context) {
+  static SugarBalanceLocalizations? of(BuildContext context) {
     return Localizations.of<SugarBalanceLocalizations>(
         context, SugarBalanceLocalizations);
   }

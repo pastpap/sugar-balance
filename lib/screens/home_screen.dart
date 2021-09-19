@@ -17,17 +17,17 @@ import 'package:sugar_balance/widgets/radial_progress.dart';
 import 'package:sugar_balance/widgets/readings_graph.dart';
 
 class MyHomePage extends StatefulWidget {
-  final HomePageBloc homePageBloc;
+  final HomePageBloc? homePageBloc;
 
-  const MyHomePage({Key key, this.homePageBloc}) : super(key: key);
+  const MyHomePage({Key? key, this.homePageBloc}) : super(key: key);
   @override
   MyHomePageState createState() => MyHomePageState();
 }
 
 class MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  HomePageBloc _homePageBloc;
-  AnimationController _iconAnimationController;
+  HomePageBloc? _homePageBloc;
+  late AnimationController _iconAnimationController;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class MyHomePageState extends State<MyHomePage>
 
   @override
   void dispose() {
-    _homePageBloc.dispose();
+    _homePageBloc!.dispose();
     _iconAnimationController.dispose();
     super.dispose();
   }
@@ -50,7 +50,7 @@ class MyHomePageState extends State<MyHomePage>
     bool bigPhone = MediaQuery.of(context).size.height > smallPhoneHeight;
     return BlocBuilder(
         bloc: filteredReadsBloc,
-        builder: (context, state) {
+        builder: (context, dynamic state) {
           if (state is FilteredReadLoading) {
             return LoadingIndicator(key: Keys.readsLoading);
           } else if (state is FilteredReadLoaded) {
@@ -81,19 +81,20 @@ class MyHomePageState extends State<MyHomePage>
                                       size: 35.0,
                                     ),
                                     onPressed: () {
-                                      _homePageBloc.subtractDate();
+                                      _homePageBloc!.subtractDate();
                                     },
                                   ),
                                   StreamBuilder(
-                                    stream: _homePageBloc.dateStream,
-                                    initialData: _homePageBloc.selectedDate,
+                                    stream: _homePageBloc!.dateStream,
+                                    initialData: _homePageBloc!.selectedDate,
                                     builder: (context, snapshot) {
                                       return Expanded(
                                         child: Column(
                                           children: <Widget>[
                                             Text(
-                                              formatterDayOfWeek
-                                                  .format(snapshot.data),
+                                              formatterDayOfWeek.format(
+                                                  DateTime.parse(snapshot.data
+                                                      .toString())),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 24.0,
@@ -101,8 +102,9 @@ class MyHomePageState extends State<MyHomePage>
                                                   letterSpacing: 1.2),
                                             ),
                                             Text(
-                                              formatterDate
-                                                  .format(snapshot.data),
+                                              formatterDate.format(
+                                                  DateTime.parse(snapshot.data
+                                                      .toString())),
                                               style: TextStyle(
                                                 fontSize: 20.0,
                                                 color: Colors.white,
@@ -123,7 +125,7 @@ class MyHomePageState extends State<MyHomePage>
                                         size: 35.0,
                                       ),
                                       onPressed: () {
-                                        _homePageBloc.addDate();
+                                        _homePageBloc!.addDate();
                                       },
                                     ),
                                   )
@@ -240,8 +242,8 @@ class MyHomePageState extends State<MyHomePage>
   double getHighestReadToday(List<Reading> filteredReads) {
     double result = 0;
     filteredReads.forEach((element) {
-      if (result < element.value) {
-        result = element.value.toDouble();
+      if (result < element.value!) {
+        result = element.value!.toDouble();
       }
     });
     return result;

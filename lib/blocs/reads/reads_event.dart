@@ -41,7 +41,7 @@ class UpdateRead extends ReadsEvent {
 }
 
 class DeleteRead extends ReadsEvent {
-  final Reading read;
+  final Reading? read;
 
   DeleteRead(this.read) : super([read]);
 
@@ -49,7 +49,7 @@ class DeleteRead extends ReadsEvent {
   String toString() => 'DeleteRead { read: $read }';
 
   @override
-  List<Object> get props => [read];
+  List<Object?> get props => [read];
 }
 
 class ClearCompleted extends ReadsEvent {

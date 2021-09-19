@@ -9,7 +9,7 @@ class ShowGraph extends StatefulWidget {
 
 class _ShowGraphState extends State<ShowGraph>
     with SingleTickerProviderStateMixin<ShowGraph> {
-  AnimationController _graphAnimationController;
+  AnimationController? _graphAnimationController;
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _ShowGraphState extends State<ShowGraph>
 
   @override
   void dispose() {
-    _graphAnimationController.dispose();
+    _graphAnimationController!.dispose();
     super.dispose();
   }
 
@@ -32,7 +32,7 @@ class _ShowGraphState extends State<ShowGraph>
           alignment: Alignment.center,
           child: InkWell(
             onTap: () {
-              _graphAnimationController.forward();
+              _graphAnimationController!.forward();
             },
             child: Graph(
                 animationController: _graphAnimationController,

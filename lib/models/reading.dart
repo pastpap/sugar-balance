@@ -7,26 +7,26 @@ import 'package:sugar_balance/models/uuid.dart';
 @immutable
 class Reading extends Equatable {
   final String id;
-  final int value;
-  final String meal;
-  final String periodOfMeal;
+  final int? value;
+  final String? meal;
+  final String? periodOfMeal;
   final DateTime date;
   final TimeOfDay time;
   final String note;
 
   Reading(this.value, this.date, this.time, this.meal, this.periodOfMeal,
-      {String note = '', String id})
+      {String? note = '', String? id})
       : this.note = note ?? '',
         this.id = id ?? Uuid().generateV4(),
         super();
   Reading copyWith(
-      {String id,
-      String note,
-      String meal,
-      String periodOfMeal,
-      int value,
-      DateTime date,
-      TimeOfDay time}) {
+      {String? id,
+      String? note,
+      String? meal,
+      String? periodOfMeal,
+      int? value,
+      DateTime? date,
+      TimeOfDay? time}) {
     return Reading(value ?? this.value, date ?? this.date, time ?? this.time,
         meal ?? this.meal, periodOfMeal ?? this.periodOfMeal,
         id: id ?? this.id, note: note ?? this.note);
@@ -54,5 +54,5 @@ class Reading extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, value, date, time, note, meal, periodOfMeal];
+  List<Object?> get props => [id, value, date, time, note, meal, periodOfMeal];
 }

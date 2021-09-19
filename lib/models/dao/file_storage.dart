@@ -22,7 +22,7 @@ class FileStorage {
     this.getDirectory,
   );
 
-  Future<List<ReadEntity>> loadReads() async {
+  Future<List<ReadEntity>?> loadReads() async {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = JsonDecoder().convert(string);

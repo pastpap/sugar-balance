@@ -20,10 +20,10 @@ void main() {
   // BlocSupervisor oversees Blocs and delegates to BlocDelegate.
   // We can set the BlocSupervisor's delegate to an instance of `SimpleBlocDelegate`.
   // This will allow us to handle all transitions and errors in SimpleBlocDelegate.
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  Bloc.observer = SimpleBlocObserver();
   runApp(
     BlocProvider(
-      builder: (context) {
+      create: (context) {
         return ReadsBloc(
           todosRepository: const ReadsRepositoryFlutter(
             fileStorage: const FileStorage(
@@ -31,7 +31,7 @@ void main() {
               getApplicationDocumentsDirectory,
             ),
           ),
-        )..dispatch(LoadReads());
+        )..add(LoadReads());
       },
       child: SuggarBlanceApp(),
     ),
@@ -52,9 +52,9 @@ class SuggarBlanceApp extends StatelessWidget {
       localizationsDelegates: [SugarBalanceLocalizationsDelegate()],
       routes: {
         Routes.home: (context) {
-          return BlocProviderTree(blocProviders: [
+          return MultiBlocProvider(providers: [
             BlocProvider<FilteredReadsBloc>(
-              builder: (context) => FilteredReadsBloc(
+              create: (context) => FilteredReadsBloc(
                 readsBloc: readsBloc,
                 homePageBloc: homePageBloc,
               ),
@@ -65,7 +65,7 @@ class SuggarBlanceApp extends StatelessWidget {
           return AddEditScreen(
             key: Keys.addReadingScreen,
             onSave: (id, value, date, time, meal, periodOfMeal, note) {
-              readsBloc.dispatch(
+              readsBloc.add(
                 AddRead(Reading(value, date, time, meal, periodOfMeal,
                     note: note, id: id)),
               );
