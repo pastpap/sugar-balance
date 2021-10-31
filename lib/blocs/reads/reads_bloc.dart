@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
 import 'package:sugar_balance/models/dao/reads_repository_simple.dart';
 import 'package:sugar_balance/models/models.dart';
 
@@ -10,8 +9,6 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
   final ReadsRepositoryFlutter todosRepository;
 
   ReadsBloc({required this.todosRepository}) : super(ReadsLoading());
-
-  ReadsState get initialState => ReadsLoading();
 
   @override
   Stream<ReadsState> mapEventToState(ReadsEvent event) async* {
@@ -28,10 +25,9 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
 
   Stream<ReadsState> _mapLoadReadsToState() async* {
     try {
-      final reads = await (this.todosRepository.loadReads()
-          as FutureOr<List<ReadEntity>>);
+      final reads = await this.todosRepository.loadReads();
       yield ReadsLoaded(
-        reads.map(Reading.fromEntity).toList(),
+        reads!.map(Reading.fromEntity).toList(),
       );
     } catch (_) {
       yield ReadsNotLoaded();
@@ -62,7 +58,7 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
     if (state is ReadsLoaded) {
       final updatedReads = (state as ReadsLoaded)
           .reads
-          .where((read) => read.id != event.read!.id)
+          .where((read) => read.id != event.read.id)
           .toList();
       yield ReadsLoaded(updatedReads);
       _saveReads(updatedReads);

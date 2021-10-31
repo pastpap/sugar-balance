@@ -35,7 +35,7 @@ class DetailsScreen extends StatelessWidget {
                 key: Keys.deleteTodoButton,
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  readsBloc.add(DeleteRead(read));
+                  readsBloc.add(DeleteRead(read!));
                   Navigator.pop(context, read);
                 },
               )
