@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:sugar_balance/blocs/reads/reads.dart';
 import 'package:sugar_balance/models/dao/reads_repository_simple.dart';
 import 'package:sugar_balance/models/models.dart';
@@ -9,10 +8,7 @@ import 'package:sugar_balance/models/models.dart';
 class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
   final ReadsRepositoryFlutter todosRepository;
 
-  ReadsBloc({@required this.todosRepository});
-
-  @override
-  ReadsState get initialState => ReadsLoading();
+  ReadsBloc({required this.todosRepository}) : super(ReadsLoading());
 
   @override
   Stream<ReadsState> mapEventToState(ReadsEvent event) async* {
@@ -31,7 +27,7 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
     try {
       final reads = await this.todosRepository.loadReads();
       yield ReadsLoaded(
-        reads.map(Reading.fromEntity).toList(),
+        reads!.map(Reading.fromEntity).toList(),
       );
     } catch (_) {
       yield ReadsNotLoaded();
@@ -39,18 +35,18 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
   }
 
   Stream<ReadsState> _mapAddTodoToState(AddRead event) async* {
-    if (currentState is ReadsLoaded) {
-      final List<Reading> updatedReads =
-          List.from((currentState as ReadsLoaded).reads)..add(event.read);
+    if (state is ReadsLoaded) {
+      final List<Reading> updatedReads = List.from((state as ReadsLoaded).reads)
+        ..add(event.read);
       yield ReadsLoaded(updatedReads);
       _saveReads(updatedReads);
     }
   }
 
   Stream<ReadsState> _mapUpdateTodoToState(UpdateRead event) async* {
-    if (currentState is ReadsLoaded) {
+    if (state is ReadsLoaded) {
       final List<Reading> updatedReads =
-          (currentState as ReadsLoaded).reads.map((read) {
+          (state as ReadsLoaded).reads.map((read) {
         return read.id == event.updatedRead.id ? event.updatedRead : read;
       }).toList();
       yield ReadsLoaded(updatedReads);
@@ -59,8 +55,8 @@ class ReadsBloc extends Bloc<ReadsEvent, ReadsState> {
   }
 
   Stream<ReadsState> _mapDeleteTodoToState(DeleteRead event) async* {
-    if (currentState is ReadsLoaded) {
-      final updatedReads = (currentState as ReadsLoaded)
+    if (state is ReadsLoaded) {
+      final updatedReads = (state as ReadsLoaded)
           .reads
           .where((read) => read.id != event.read.id)
           .toList();

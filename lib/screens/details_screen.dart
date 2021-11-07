@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,7 @@ class DetailsScreen extends StatelessWidget {
   final formatter = new DateFormat('yyyy-MM-dd');
   final String id;
 
-  DetailsScreen({Key key, @required this.id})
+  DetailsScreen({Key? key, required this.id})
       : super(key: key ?? Keys.readDetailsScreen);
 
   @override
@@ -20,11 +21,11 @@ class DetailsScreen extends StatelessWidget {
     final readsBloc = BlocProvider.of<ReadsBloc>(context);
     return BlocBuilder(
       bloc: readsBloc,
-      builder: (context, state) {
+      builder: (context, dynamic state) {
         final read = (state as ReadsLoaded)
             .reads
-            .firstWhere((read) => read.id == id, orElse: () => null);
-        final localizations = SugarBalanceLocalizations.of(context);
+            .firstWhereOrNull((read) => read.id == id);
+        final localizations = SugarBalanceLocalizations.of(context)!;
         return Scaffold(
           appBar: AppBar(
             title: Text(localizations.readDetails),
@@ -34,7 +35,7 @@ class DetailsScreen extends StatelessWidget {
                 key: Keys.deleteTodoButton,
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  readsBloc.dispatch(DeleteRead(read));
+                  readsBloc.add(DeleteRead(read!));
                   Navigator.pop(context, read);
                 },
               )
@@ -65,7 +66,7 @@ class DetailsScreen extends StatelessWidget {
                                       read.value.toString(),
                                       key: Keys.detailsTodoItemTask,
                                       style:
-                                          Theme.of(context).textTheme.headline,
+                                          Theme.of(context).textTheme.headline1,
                                     ),
                                   ),
                                 ),
@@ -76,12 +77,12 @@ class DetailsScreen extends StatelessWidget {
                                     Text(
                                       read.time.format(context),
                                       style:
-                                          Theme.of(context).textTheme.subhead,
+                                          Theme.of(context).textTheme.subtitle1,
                                     ),
                                     Text(
                                       formatter.format(read.date),
                                       style:
-                                          Theme.of(context).textTheme.subhead,
+                                          Theme.of(context).textTheme.subtitle1,
                                     ),
                                   ],
                                 ),
@@ -89,7 +90,8 @@ class DetailsScreen extends StatelessWidget {
                                   padding: const EdgeInsets.only(top: 16.0),
                                   child: Text(
                                     "Description",
-                                    style: Theme.of(context).textTheme.headline,
+                                    style:
+                                        Theme.of(context).textTheme.headline1,
                                   ),
                                 ),
                                 Divider(),
@@ -98,7 +100,8 @@ class DetailsScreen extends StatelessWidget {
                                   child: Text(
                                     read.note,
                                     key: Keys.detailsTodoItemNote,
-                                    style: Theme.of(context).textTheme.subhead,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ],
@@ -123,7 +126,7 @@ class DetailsScreen extends StatelessWidget {
                             key: Keys.editReadingScreen,
                             onSave: (id, value, fromDate, fromTime, meal,
                                 periodOfMeal, note) {
-                              readsBloc.dispatch(
+                              readsBloc.add(
                                 UpdateRead(
                                   read.copyWith(
                                       id: id,

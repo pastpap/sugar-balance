@@ -18,8 +18,8 @@ import 'read_entity.dart';
 abstract class ReadsRepository {
   /// Loads reads first from File storage. If they don't exist or encounter an
   /// error, it attempts to load the Reads from a Web Client.
-  Future<List<ReadEntity>> loadReads();
+  Future<List<ReadEntity>?> loadReads();
 
   // Persists reads to local disk and the web
-  Future saveReads(List<ReadEntity> reads);
+  Future saveReads(List<ReadEntity>? reads);
 }

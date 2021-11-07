@@ -4,21 +4,21 @@ import 'package:sugar_balance/models/models.dart';
 
 @immutable
 abstract class ReadsState extends Equatable {
-  ReadsState([List props = const []]) : super();
-}
-
-class ReadsLoading extends ReadsState {
-  @override
-  String toString() => 'ReadsLoading';
+  const ReadsState();
 
   @override
   List<Object> get props => [];
 }
 
+class ReadsLoading extends ReadsState {
+  @override
+  String toString() => 'ReadsLoading';
+}
+
 class ReadsLoaded extends ReadsState {
   final List<Reading> reads;
 
-  ReadsLoaded([this.reads = const []]) : super([reads]);
+  ReadsLoaded([this.reads = const []]);
 
   @override
   String toString() => 'ReadsLoaded { reads: $reads }';
@@ -30,7 +30,4 @@ class ReadsLoaded extends ReadsState {
 class ReadsNotLoaded extends ReadsState {
   @override
   String toString() => 'ReadsNotLoaded';
-
-  @override
-  List<Object> get props => [];
 }

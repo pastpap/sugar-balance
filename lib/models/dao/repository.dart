@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:meta/meta.dart';
 import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
 
 import 'file_storage.dart';
@@ -18,26 +17,26 @@ class ReadsRepositoryFlutter implements ReadsRepository {
   final WebClient webClient;
 
   const ReadsRepositoryFlutter({
-    @required this.fileStorage,
+    required this.fileStorage,
     this.webClient = const WebClient(),
   });
 
   /// Loads todos first from File storage. If they don't exist or encounter an
   /// error, it attempts to load the Todos from a Web Client.
   @override
-  Future<List<ReadEntity>> loadReads() async {
+  Future<List<ReadEntity>?> loadReads() async {
     try {
       return await fileStorage.loadReads();
     } catch (e) {
-      return new List<ReadEntity>();
+      return <ReadEntity>[];
     }
   }
 
   // Persists todos to local disk and the web
   @override
-  Future saveReads(List<ReadEntity> reads) {
+  Future saveReads(List<ReadEntity>? reads) {
     return Future.wait<dynamic>([
-      fileStorage.saveReads(reads),
+      fileStorage.saveReads(reads!),
     ]);
   }
 }

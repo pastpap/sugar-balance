@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sugar_balance/models/models.dart';
 
 class ReadingsGraph extends StatelessWidget {
-  final List<Reading> reads;
-  final bool animate;
+  final List<Reading>? reads;
+  final bool? animate;
 
   ReadingsGraph({this.reads, this.animate});
 
@@ -28,8 +28,8 @@ class ReadingsGraph extends StatelessWidget {
   }
 
   List<charts.Series<TimeSeriesRead, DateTime>> manageReadsData() {
-    final data = new List<TimeSeriesRead>();
-    reads.forEach((element) {
+    final data = <TimeSeriesRead>[];
+    reads!.forEach((element) {
       final elementDate = new DateTime(element.date.year, element.date.month,
           element.date.day, element.time.hour, element.time.minute);
       data.add(new TimeSeriesRead(elementDate, element.value));
@@ -49,7 +49,7 @@ class ReadingsGraph extends StatelessWidget {
 /// Sample time series data type.
 class TimeSeriesRead {
   final DateTime time;
-  final int readValue;
+  final int? readValue;
 
   TimeSeriesRead(this.time, this.readValue);
 }

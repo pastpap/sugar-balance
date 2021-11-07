@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class RadialProgress extends StatefulWidget {
-  final double highestOfToday;
+  final double? highestOfToday;
 
-  RadialProgress({Key key, this.highestOfToday}) : super(key: key);
+  RadialProgress({Key? key, this.highestOfToday}) : super(key: key);
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -12,10 +12,10 @@ class RadialProgress extends StatefulWidget {
 
 class _RadialProgressState extends State<RadialProgress>
     with SingleTickerProviderStateMixin {
-  AnimationController _radialProgressAnimationController;
-  Animation<double> _progressAnimation;
+  AnimationController? _radialProgressAnimationController;
+  late Animation<double> _progressAnimation;
   final double maximumLimit = 500;
-  Tween<double> _valueTween;
+  Tween<double>? _valueTween;
   final Duration fadeInDuration = Duration(milliseconds: 500);
   final Duration fillDuration = Duration(seconds: 1);
 
@@ -31,23 +31,23 @@ class _RadialProgressState extends State<RadialProgress>
       begin: 0.0,
       end: 360.0,
     );
-    _progressAnimation = _valueTween.animate(CurvedAnimation(
-      parent: _radialProgressAnimationController,
+    _progressAnimation = _valueTween!.animate(CurvedAnimation(
+      parent: _radialProgressAnimationController!,
       curve: Curves.easeIn,
     ))
       ..addListener(() {
         setState(() {
-          progress =
-              (widget.highestOfToday / maximumLimit) * _progressAnimation.value;
+          progress = (widget.highestOfToday! / maximumLimit) *
+              _progressAnimation.value;
         });
       });
-    _radialProgressAnimationController.forward();
+    _radialProgressAnimationController!.forward();
     super.initState();
   }
 
   @override
   void dispose() {
-    _radialProgressAnimationController.dispose();
+    _radialProgressAnimationController!.dispose();
     super.dispose();
   }
 
@@ -104,10 +104,11 @@ class _RadialProgressState extends State<RadialProgress>
     if (this.widget.highestOfToday != oldWidget.highestOfToday) {
       // Try to start with the previous tween's end value. This ensures that we
       // have a smooth transition from where the previous animation reached.
-      double beginValue =
-          this._valueTween?.evaluate(this._radialProgressAnimationController) ??
-              oldWidget?.highestOfToday ??
-              0;
+      double beginValue = this
+              ._valueTween
+              ?.evaluate(this._radialProgressAnimationController!) ??
+          oldWidget.highestOfToday ??
+          0;
 
       // Update the value tween.
       this._valueTween = Tween<double>(
@@ -115,7 +116,7 @@ class _RadialProgressState extends State<RadialProgress>
         end: this.widget.highestOfToday ?? 1,
       );
 
-      this._radialProgressAnimationController
+      this._radialProgressAnimationController!
         ..value = 0
         ..forward();
     }

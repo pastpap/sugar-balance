@@ -13,14 +13,14 @@ import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
 /// clear responsibility: Load Reads and Persist reads.
 class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
   final ReadsRepository _repository;
-  final BehaviorSubject<List<ReadEntity>> _subject;
+  final BehaviorSubject<List<ReadEntity>?> _subject;
   bool _loaded = false;
 
   ReactiveReadsRepositoryFlutter({
-    @required ReadsRepository repository,
-    List<ReadEntity> seedValue,
+    required ReadsRepository repository,
+    List<ReadEntity>? seedValue,
   })  : this._repository = repository,
-        this._subject = BehaviorSubject<List<ReadEntity>>.seeded(seedValue);
+        this._subject = BehaviorSubject<List<ReadEntity>?>.seeded(seedValue);
 
   @override
   Future<void> addNewRead(ReadEntity read) async {
@@ -34,7 +34,7 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
   @override
   Future<void> deleteRead(List<String> idList) async {
     _subject.add(
-      List<ReadEntity>.unmodifiable(_subject.value.fold<List<ReadEntity>>(
+      List<ReadEntity>.unmodifiable(_subject.value!.fold<List<ReadEntity>>(
         <ReadEntity>[],
         (prev, entity) {
           return idList.contains(entity.id) ? prev : (prev..add(entity));
@@ -46,7 +46,7 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
   }
 
   @override
-  Stream<List<ReadEntity>> reads() {
+  Stream<List<ReadEntity>?> reads() {
     if (!_loaded) _loadReads();
 
     return _subject.stream;
@@ -57,7 +57,7 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
 
     _repository.loadReads().then((entities) {
       _subject.add(List<ReadEntity>.unmodifiable(
-        []..addAll(_subject.value ?? [])..addAll(entities),
+        []..addAll(_subject.value ?? [])..addAll(entities!),
       ));
     });
   }
@@ -65,7 +65,7 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
   @override
   Future<void> updateRead(ReadEntity update) async {
     _subject.add(
-      List<ReadEntity>.unmodifiable(_subject.value.fold<List<ReadEntity>>(
+      List<ReadEntity>.unmodifiable(_subject.value!.fold<List<ReadEntity>>(
         <ReadEntity>[],
         (prev, entity) => prev..add(entity.id == update.id ? update : entity),
       )),

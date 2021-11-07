@@ -12,24 +12,25 @@ class FilteredReadsBloc
     extends Bloc<FilteredReadingEvent, FilteredReadingState> {
   final ReadsBloc readsBloc;
   final HomePageBloc homePageBloc;
-  StreamSubscription readsSubscription;
-  StreamSubscription homePageBlockSubscription;
+  late StreamSubscription readsSubscription;
+  late StreamSubscription homePageBlockSubscription;
 
-  FilteredReadsBloc({@required this.readsBloc, @required this.homePageBloc}) {
-    readsSubscription = readsBloc.state.listen((state) {
+  FilteredReadsBloc({required this.readsBloc, required this.homePageBloc})
+      : super(FilteredReadLoading()) {
+    readsSubscription = readsBloc.stream.listen((state) {
       if (state is ReadsLoaded) {
-        dispatch(UpdateReadings((readsBloc.currentState as ReadsLoaded).reads));
+        add(UpdateReadings((readsBloc.state as ReadsLoaded).reads));
       }
     });
-    homePageBlockSubscription = homePageBloc.dateStream.listen(
-        (date) => dispatch(UpdateForDateFilter(homePageBloc.selectedDate)));
+    homePageBlockSubscription = homePageBloc.dateStream
+        .listen((date) => add(UpdateForDateFilter(homePageBloc.selectedDate)));
   }
 
   @override
   FilteredReadingState get initialState {
-    return readsBloc.currentState is ReadsLoaded
+    return readsBloc.state is ReadsLoaded
         ? FilteredReadLoaded(
-            (readsBloc.currentState as ReadsLoaded).reads,
+            (readsBloc.state as ReadsLoaded).reads,
             DateTime.now(),
           )
         : FilteredReadLoading();
@@ -48,10 +49,10 @@ class FilteredReadsBloc
   Stream<FilteredReadingState> _mapUpdateFilterToState(
     UpdateForDateFilter event,
   ) async* {
-    if (readsBloc.currentState is ReadsLoaded) {
+    if (readsBloc.state is ReadsLoaded) {
       yield FilteredReadLoaded(
         _mapReadsToFilteredReads(
-          (readsBloc.currentState as ReadsLoaded).reads,
+          (readsBloc.state as ReadsLoaded).reads,
           event.forDateFilter,
         ),
         event.forDateFilter,
@@ -62,12 +63,12 @@ class FilteredReadsBloc
   Stream<FilteredReadingState> _mapReadsUpdatedToState(
     UpdateReadings event,
   ) async* {
-    final forDateFilter = currentState is FilteredReadLoaded
-        ? (currentState as FilteredReadLoaded).forDate
+    final forDateFilter = state is FilteredReadLoaded
+        ? (state as FilteredReadLoaded).forDate
         : DateTime.now();
     yield FilteredReadLoaded(
       _mapReadsToFilteredReads(
-        (readsBloc.currentState as ReadsLoaded).reads,
+        (readsBloc.state as ReadsLoaded).reads,
         forDateFilter,
       ),
       forDateFilter,
@@ -83,9 +84,9 @@ class FilteredReadsBloc
   }
 
   @override
-  void dispose() {
+  Future<void> close() async {
     readsSubscription.cancel();
     homePageBlockSubscription.cancel();
-    super.dispose();
+    super.close();
   }
 }
