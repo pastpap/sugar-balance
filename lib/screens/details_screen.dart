@@ -66,7 +66,7 @@ class DetailsScreen extends StatelessWidget {
                                       read.value.toString(),
                                       key: Keys.detailsTodoItemTask,
                                       style:
-                                          Theme.of(context).textTheme.headline1,
+                                          Theme.of(context).textTheme.headline3,
                                     ),
                                   ),
                                 ),
@@ -91,7 +91,7 @@ class DetailsScreen extends StatelessWidget {
                                   child: Text(
                                     "Description",
                                     style:
-                                        Theme.of(context).textTheme.headline1,
+                                        Theme.of(context).textTheme.headline5,
                                   ),
                                 ),
                                 Divider(),

@@ -29,7 +29,7 @@ class ReadItem extends StatelessWidget {
             child: Text(
               reading.value.toString(),
               key: Keys.readItemValue(reading.id),
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
         ),
@@ -38,7 +38,7 @@ class ReadItem extends StatelessWidget {
           children: <Widget>[
             Text(
               reading.time.format(context),
-              style: Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             if (reading.note.isNotEmpty)
               Text(
@@ -46,7 +46,7 @@ class ReadItem extends StatelessWidget {
                 key: Keys.readItemNote(reading.id),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.bodyText1,
               )
             else
               Text(''),
