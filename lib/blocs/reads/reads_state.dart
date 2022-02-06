@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:sugar_balance/models/models.dart';
+import 'package:sugarbalance/models/models.dart';
 
 @immutable
 abstract class ReadsState extends Equatable {

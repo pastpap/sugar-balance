@@ -1,14 +1,10 @@
-// Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
-// Use of this source code is governed by the MIT license that can be found
-// in the LICENSE file.
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
+import 'package:sugarbalance/models/dao/core/reads_repository_core.dart';
 
-/// Loads and saves a List of Todos using a text file stored on the device.
+/// Loads and saves a List of Reads using a text file stored on the device.
 ///
 /// Note: This class has no direct dependencies on any Flutter dependencies.
 /// Instead, the `getDirectory` method should be injected. This allows for
@@ -25,12 +21,14 @@ class FileStorage {
   Future<List<ReadEntity>?> loadReads() async {
     final file = await _getLocalFile();
     final string = await file.readAsString();
-    final json = JsonDecoder().convert(string);
-    final reads = (json['reads'])
-        .map<ReadEntity>((read) => ReadEntity.fromJson(read))
-        .toList();
+    final Map<String, dynamic> json = jsonDecode(string);
+    final List<dynamic> listOfReads = json['reads'];
+    final List<ReadEntity> entities = [];
+    listOfReads.forEach((read) {
+      entities.add(ReadEntity.fromJson(read));
+    });
 
-    return reads;
+    return entities;
   }
 
   Future<File> saveReads(List<ReadEntity> reads) async {

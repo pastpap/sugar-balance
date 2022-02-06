@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/navigation/keys.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/navigation/keys.dart';
 
 class ReadItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;

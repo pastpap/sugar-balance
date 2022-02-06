@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/localizations/localization.dart';
-import 'package:sugar_balance/navigation/flutter_read_keys.dart';
-import 'package:sugar_balance/navigation/keys.dart';
-import 'package:sugar_balance/screens/add_edit_screen.dart';
+import 'package:sugarbalance/blocs/reads/reads.dart';
+import 'package:sugarbalance/localizations/localization.dart';
+import 'package:sugarbalance/navigation/flutter_read_keys.dart';
+import 'package:sugarbalance/navigation/keys.dart';
+import 'package:sugarbalance/screens/add_edit_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   final formatter = new DateFormat('yyyy-MM-dd');
@@ -31,8 +31,8 @@ class DetailsScreen extends StatelessWidget {
             title: Text(localizations.readDetails),
             actions: [
               IconButton(
-                tooltip: localizations.deleteTodo,
-                key: Keys.deleteTodoButton,
+                tooltip: localizations.deleteRead,
+                key: Keys.deleteReadButton,
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   readsBloc.add(DeleteRead(read!));
@@ -64,7 +64,7 @@ class DetailsScreen extends StatelessWidget {
                                     ),
                                     child: Text(
                                       read.value.toString(),
-                                      key: Keys.detailsTodoItemTask,
+                                      key: Keys.detailsReadItemTask,
                                       style:
                                           Theme.of(context).textTheme.headline3,
                                     ),
@@ -99,7 +99,7 @@ class DetailsScreen extends StatelessWidget {
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
                                     read.note,
-                                    key: Keys.detailsTodoItemNote,
+                                    key: Keys.detailsReadItemNote,
                                     style:
                                         Theme.of(context).textTheme.subtitle1,
                                   ),
@@ -113,7 +113,7 @@ class DetailsScreen extends StatelessWidget {
                   ),
                 ),
           floatingActionButton: FloatingActionButton(
-            key: Keys.editTodoFab,
+            key: Keys.editReadFab,
             tooltip: localizations.editReading,
             child: Icon(Icons.edit),
             onPressed: read == null

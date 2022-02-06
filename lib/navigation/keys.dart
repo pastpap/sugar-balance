@@ -27,7 +27,7 @@ class Keys {
 
   // Tabs
   static final tabs = const Key('__tabs__');
-  static final todoTab = const Key('__todoTab__');
+  static final readTab = const Key('__readTab__');
   static final statsTab = const Key('__statsTab__');
 
   // Extra Actions
@@ -48,10 +48,10 @@ class Keys {
   static final statsNumCompleted = const Key('__statsCompletedItems__');
 
   // Details Screen
-  static final editTodoFab = const Key('__editTodoFab__');
-  static final deleteTodoButton = const Key('__deleteTodoFab__');
+  static final editReadFab = const Key('__editReadFab__');
+  static final deleteReadButton = const Key('__deleteReadFab__');
   static final readDetailsScreen = const Key('__readDetailsScreen__');
-  static final detailsTodoItemCheckbox = Key('DetailsTodo__Checkbox');
-  static final detailsTodoItemTask = Key('DetailsTodo__Task');
-  static final detailsTodoItemNote = Key('DetailsTodo__Note');
+  static final detailsReadItemCheckbox = Key('DetailsRead__Checkbox');
+  static final detailsReadItemTask = Key('DetailsRead__Task');
+  static final detailsReadItemNote = Key('DetailsRead__Note');
 }

@@ -2,15 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/localizations/localization.dart';
-import 'package:sugar_balance/navigation/flutter_read_keys.dart';
-import 'package:sugar_balance/navigation/keys.dart';
-import 'package:sugar_balance/screens/details_screen.dart';
-import 'package:sugar_balance/widgets/delete_read_snack_bar.dart';
-import 'package:sugar_balance/widgets/loading_indicator.dart';
-import 'package:sugar_balance/widgets/read_item.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads.dart';
+import 'package:sugarbalance/blocs/reads/reads.dart';
+import 'package:sugarbalance/localizations/localization.dart';
+import 'package:sugarbalance/navigation/flutter_read_keys.dart';
+import 'package:sugarbalance/navigation/keys.dart';
+import 'package:sugarbalance/screens/details_screen.dart';
+import 'package:sugarbalance/widgets/delete_read_snack_bar.dart';
+import 'package:sugarbalance/widgets/loading_indicator.dart';
+import 'package:sugarbalance/widgets/read_item.dart';
 
 class FilteredReads extends StatelessWidget {
   FilteredReads({Key? key}) : super(key: key);

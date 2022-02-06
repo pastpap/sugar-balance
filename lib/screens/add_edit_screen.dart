@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sugar_balance/components/date_time_picker.dart';
-import 'package:sugar_balance/localizations/localization.dart';
-import 'package:sugar_balance/models/reading.dart';
-import 'package:sugar_balance/navigation/keys.dart';
+import 'package:sugarbalance/components/date_time_picker.dart';
+import 'package:sugarbalance/localizations/localization.dart';
+import 'package:sugarbalance/models/reading.dart';
+import 'package:sugarbalance/navigation/keys.dart';
 
 typedef OnSaveCallback = Function(String? id, int? task, DateTime date,
     TimeOfDay time, String? meal, String? periodOfMeal, String? note);

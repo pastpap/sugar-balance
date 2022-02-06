@@ -1,7 +1,7 @@
 /// Example of a time series chart using a bar renderer.
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:sugar_balance/models/models.dart';
+import 'package:sugarbalance/models/models.dart';
 
 class ReadingsGraph extends StatelessWidget {
   final List<Reading>? reads;
@@ -16,7 +16,7 @@ class ReadingsGraph extends StatelessWidget {
       animate: animate,
       // Set the default renderer to a bar renderer.
       // This can also be one of the custom renderers of the time series chart.
-      defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+      defaultRenderer: new charts.BarRendererConfig<DateTime>(maxBarWidthPx: 5),
       // It is recommended that default interactions be turned off if using bar
       // renderer, because the line point highlighter is the default for time
       // series chart.
