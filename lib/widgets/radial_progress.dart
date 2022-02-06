@@ -141,7 +141,13 @@ class RadialPainter extends CustomPainter {
     Paint progressPaint = Paint()
       ..color = Colors.blue
       ..shader = LinearGradient(
-        colors: [Colors.red, Colors.purple, Colors.blueAccent],
+        colors: [
+          Colors.red,
+          Colors.red,
+          Colors.red,
+          Colors.blue,
+        ],
+        begin: Alignment(0, 1.0),
       ).createShader(
         Rect.fromCircle(
           center: offset,

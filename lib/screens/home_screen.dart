@@ -58,7 +58,7 @@ class MyHomePageState extends State<MyHomePage>
             return Scaffold(
               body: SlidingUpPanel(
                 renderPanelSheet: false,
-                color: Colors.blueAccent,
+                color: Colors.purpleAccent,
                 collapsed: _floatingCollapsed(),
                 panel: _floatingPanel(),
                 body: Stack(
