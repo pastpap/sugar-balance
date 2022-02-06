@@ -126,9 +126,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get emptyBloodLevel => Intl.message(
-        'Please enter a number',
-        name: 'emptyBloodLevel',
+  String get emptyOrIncorrectBloodSugarLevel => Intl.message(
+        'Please enter a number higher than 0 and lower than 500',
+        name: 'emptyOrIncorrectBloodSugarLevel',
         args: [],
         locale: locale.toString(),
       );

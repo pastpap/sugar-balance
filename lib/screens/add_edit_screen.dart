@@ -79,7 +79,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: isEditing ? widget.reading!.value.toString() : '0',
+                initialValue: isEditing ? widget.reading!.value.toString() : '',
                 key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
@@ -89,8 +89,10 @@ class _AddEditScreenState extends State<AddEditScreen> {
                   hintText: "Add reading value", //localizations.newTodoHint,
                 ),
                 validator: (val) {
-                  return val!.trim().isEmpty
-                      ? localizations.emptyBloodLevel
+                  return val!.trim().isEmpty ||
+                          int.parse(val) > 500 ||
+                          int.parse(val) < 1
+                      ? localizations.emptyOrIncorrectBloodSugarLevel
                       : null;
                 },
                 onSaved: (value) => _value = int.parse(value!),
