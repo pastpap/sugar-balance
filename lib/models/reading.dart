@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
-import 'package:sugar_balance/models/uuid.dart';
+import 'package:sugarbalance/models/dao/core/reads_repository_core.dart';
+import 'package:sugarbalance/models/uuid.dart';
 
 @immutable
 class Reading extends Equatable {

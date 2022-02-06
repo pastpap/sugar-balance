@@ -5,12 +5,9 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:meta/meta.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:sugar_balance/models/dao/core/reads_repository_core.dart';
+import 'package:sugarbalance/models/dao/core/reads_repository_core.dart';
 
-/// A class that glues together our local file storage and web client. It has a
-/// clear responsibility: Load Reads and Persist reads.
 class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
   final ReadsRepository _repository;
   final BehaviorSubject<List<ReadEntity>?> _subject;
@@ -57,7 +54,9 @@ class ReactiveReadsRepositoryFlutter implements ReactiveReadsRepository {
 
     _repository.loadReads().then((entities) {
       _subject.add(List<ReadEntity>.unmodifiable(
-        []..addAll(_subject.value ?? [])..addAll(entities!),
+        []
+          ..addAll(_subject.value ?? [])
+          ..addAll(entities!),
       ));
     });
   }

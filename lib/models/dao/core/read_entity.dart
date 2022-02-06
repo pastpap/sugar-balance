@@ -1,7 +1,3 @@
-// Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
-// Use of this source code is governed by the MIT license that can be found
-// in the LICENSE file.
-
 import 'package:flutter/material.dart';
 
 class ReadEntity {
@@ -53,10 +49,10 @@ class ReadEntity {
 
   @override
   String toString() {
-    return 'TodoEntity{date: $date, time: $time, value: $value, note: $note, id: $id}';
+    return 'ReadEntity{date: $date, time: $time, value: $value, note: $note, id: $id}';
   }
 
-  static ReadEntity fromJson(Map<String, Object> json) {
+  static ReadEntity fromJson(Map<String, dynamic> json) {
     return ReadEntity(
         json["value"] as int?,
         json["id"] as String?,

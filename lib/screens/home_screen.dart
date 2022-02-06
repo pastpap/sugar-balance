@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/blocs/home_page_bloc.dart';
-import 'package:sugar_balance/components/title_bar.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/navigation/flutter_read_keys.dart';
-import 'package:sugar_balance/navigation/keys.dart';
-import 'package:sugar_balance/navigation/routes.dart';
-import 'package:sugar_balance/themes/colors.dart';
-import 'package:sugar_balance/utils/date_utils.dart';
-import 'package:sugar_balance/utils/screen_sizes.dart';
-import 'package:sugar_balance/widgets/filtered_reads.dart';
-import 'package:sugar_balance/widgets/loading_indicator.dart';
-import 'package:sugar_balance/widgets/radial_progress.dart';
-import 'package:sugar_balance/widgets/readings_graph.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads.dart';
+import 'package:sugarbalance/blocs/home_page_bloc.dart';
+import 'package:sugarbalance/components/title_bar.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/navigation/flutter_read_keys.dart';
+import 'package:sugarbalance/navigation/keys.dart';
+import 'package:sugarbalance/navigation/routes.dart';
+import 'package:sugarbalance/themes/colors.dart';
+import 'package:sugarbalance/utils/date_utils.dart';
+import 'package:sugarbalance/utils/screen_sizes.dart';
+import 'package:sugarbalance/widgets/filtered_reads.dart';
+import 'package:sugarbalance/widgets/loading_indicator.dart';
+import 'package:sugarbalance/widgets/radial_progress.dart';
+import 'package:sugarbalance/widgets/readings_graph.dart';
 
 class MyHomePage extends StatefulWidget {
   final HomePageBloc? homePageBloc;
@@ -250,38 +250,6 @@ class MyHomePageState extends State<MyHomePage>
   }
 }
 
-class MonthlyStatusListing extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              MonthlyStatusRow('February 2017', 'On going'),
-              MonthlyStatusRow('January 2017', 'Failed'),
-              MonthlyStatusRow('December 2016', 'Completed'),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              MonthlyTargetRow('Lose weight', '3.8 ktgt/7 kg'),
-              MonthlyTargetRow('Running per month', '15.3 km/20 km'),
-              MonthlyTargetRow('Avg steps Per day', '10000/10000'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class MonthlyStatusRow extends StatelessWidget {
   final String monthYear, status;
 
@@ -307,32 +275,6 @@ class MonthlyStatusRow extends StatelessWidget {
                 color: Colors.grey,
                 fontStyle: FontStyle.italic,
                 fontSize: 16.0),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MonthlyTargetRow extends StatelessWidget {
-  final String target, targetAchieved;
-
-  MonthlyTargetRow(this.target, this.targetAchieved);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            target,
-            style: TextStyle(color: Colors.black, fontSize: 18.0),
-          ),
-          Text(
-            targetAchieved,
-            style: TextStyle(color: Colors.grey, fontSize: 16.0),
           ),
         ],
       ),

@@ -4,7 +4,7 @@
 
 import 'dart:math';
 
-/// A UUID generator, useful for generating unique IDs for your Todos.
+/// A UUID generator, useful for generating unique IDs for your Reads.
 /// Shamelessly extracted from the Flutter source code.
 ///
 /// This will generate unique IDs in the format:

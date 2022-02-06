@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/blocs/home_page_bloc.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/utils/date_utils.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads.dart';
+import 'package:sugarbalance/blocs/home_page_bloc.dart';
+import 'package:sugarbalance/blocs/reads/reads.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/utils/date_utils.dart';
 
 class FilteredReadsBloc
     extends Bloc<FilteredReadingEvent, FilteredReadingState> {
