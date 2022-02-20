@@ -12,12 +12,14 @@ class AddEditScreen extends StatefulWidget {
   final bool isEditing;
   final OnSaveCallback onSave;
   final Reading? reading;
+  final DateTime selectedDate;
 
   AddEditScreen({
     Key? key,
     required this.onSave,
     required this.isEditing,
     this.reading,
+    required this.selectedDate,
   }) : super(key: key ?? Keys.addReadingScreen);
 
   @override
@@ -30,6 +32,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   int? _value;
   String? _note;
   DateTime _fromDate = DateTime.now();
+  DateTime get fromDate => widget.selectedDate;
   TimeOfDay _fromTime =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
@@ -200,6 +203,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
         return widget.reading!.date;
       }
     } else {
+      _fromDate = fromDate;
       return _fromDate;
     }
   }

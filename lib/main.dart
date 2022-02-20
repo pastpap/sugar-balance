@@ -71,6 +71,7 @@ class SugarBalanceApp extends StatelessWidget {
               );
             },
             isEditing: false,
+            selectedDate: homePageBloc.selectedDate,
           );
         },
       },

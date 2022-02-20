@@ -137,12 +137,24 @@ class MyHomePageState extends State<MyHomePage>
                         bigPhone
                             ? buildRadialProgressAndChartColumn(reads)
                             : Container(
-                                height: 250,
+                                height: 320,
                                 child: SingleChildScrollView(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: buildRadialProgressAndChartColumn(
-                                        reads),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            size: 50.0,
+                                            color: Colors.black12,
+                                          ),
+                                        ),
+                                        buildRadialProgressAndChartColumn(
+                                            reads),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

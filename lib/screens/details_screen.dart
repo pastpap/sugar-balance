@@ -141,6 +141,7 @@ class DetailsScreen extends StatelessWidget {
                             },
                             isEditing: true,
                             reading: read,
+                            selectedDate: read.date,
                           );
                         },
                       ),
