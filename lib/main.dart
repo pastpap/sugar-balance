@@ -46,7 +46,7 @@ class SugarBalanceApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sugar Spice',
+      title: 'Sugar Balance',
       theme: appTheme,
       localizationsDelegates: [SugarBalanceLocalizationsDelegate()],
       routes: {

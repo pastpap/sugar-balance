@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sugarbalance/components/date_time_picker.dart';
 import 'package:sugarbalance/localizations/localization.dart';
@@ -86,7 +85,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 key: Keys.valueField,
                 keyboardType: TextInputType.number,
                 autofocus: !isEditing,
-                style: textTheme.headline5,
+                style: textTheme.headlineSmall,
                 decoration: InputDecoration(
                   labelText: "Blood sugar value",
                   hintText: "Add reading value", //localizations.newTodoHint,
