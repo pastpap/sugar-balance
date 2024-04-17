@@ -1,22 +1,23 @@
 PODS:
   - Flutter (1.0.0)
-  - path_provider (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
 
-PODFILE CHECKSUM: f32fb4e7c14f8b3ca19a369d7be425dd9241af27
+PODFILE CHECKSUM: 663715e941f9adb426e33bf9376914006f9ea95b
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.11.2

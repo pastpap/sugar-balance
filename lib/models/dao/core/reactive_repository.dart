@@ -8,7 +8,7 @@ import 'dart:core';
 import 'read_entity.dart';
 
 /// A data layer class works with reactive data sources, such as Firebase. This
-/// class emits a Stream of TodoEntities. The data layer of the app.
+/// class emits a Stream of ReadEntities. The data layer of the app.
 ///
 /// How and where it stores the entities should defined in a concrete
 /// implementation, such as firebase_repository_flutter.
@@ -21,7 +21,7 @@ abstract class ReactiveReadsRepository {
 
   Future<void> deleteRead(List<String> idList);
 
-  Stream<List<ReadEntity>> reads();
+  Stream<List<ReadEntity>?> reads();
 
   Future<void> updateRead(ReadEntity read);
 }

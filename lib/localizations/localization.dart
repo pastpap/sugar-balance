@@ -1,7 +1,3 @@
-// Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
-// Use of this source code is governed by the MIT license that can be found
-// in the LICENSE file.
-
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
@@ -20,14 +16,14 @@ class SugarBalanceLocalizations {
     });
   }
 
-  static SugarBalanceLocalizations of(BuildContext context) {
+  static SugarBalanceLocalizations? of(BuildContext context) {
     return Localizations.of<SugarBalanceLocalizations>(
         context, SugarBalanceLocalizations);
   }
 
-  String get todos => Intl.message(
-        'Todos',
-        name: 'todos',
+  String get reads => Intl.message(
+        'Reads',
+        name: 'reads',
         args: [],
         locale: locale.toString(),
       );
@@ -60,9 +56,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get newTodoHint => Intl.message(
+  String get newReadHint => Intl.message(
         'What needs to be done?',
-        name: 'newTodoHint',
+        name: 'newReadHint',
         args: [],
         locale: locale.toString(),
       );
@@ -109,16 +105,16 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get filterTodos => Intl.message(
-        'Filter Todos',
-        name: 'filterTodos',
+  String get filterReads => Intl.message(
+        'Filter Reads',
+        name: 'filterReads',
         args: [],
         locale: locale.toString(),
       );
 
-  String get deleteTodo => Intl.message(
-        'Delete Todo',
-        name: 'deleteTodo',
+  String get deleteRead => Intl.message(
+        'Delete Read',
+        name: 'deleteRead',
         args: [],
         locale: locale.toString(),
       );
@@ -130,9 +126,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get emptyBloodLevel => Intl.message(
-        'Please enter a number',
-        name: 'emptyBloodLevel',
+  String get emptyOrIncorrectBloodSugarLevel => Intl.message(
+        'Please enter a number higher than 0 and lower than 500',
+        name: 'emptyOrIncorrectBloodSugarLevel',
         args: [],
         locale: locale.toString(),
       );
@@ -144,23 +140,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get completedTodos => Intl.message(
-        'Completed Todos',
-        name: 'completedTodos',
-        args: [],
-        locale: locale.toString(),
-      );
-
-  String get activeTodos => Intl.message(
-        'Active Todos',
-        name: 'activeTodos',
-        args: [],
-        locale: locale.toString(),
-      );
-
   String readDeleted(String value) => Intl.message(
         'Deleted "$value"',
-        name: 'todoDeleted',
+        name: 'readDeleted',
         args: [value],
         locale: locale.toString(),
       );
@@ -172,9 +154,9 @@ class SugarBalanceLocalizations {
         locale: locale.toString(),
       );
 
-  String get deleteTodoConfirmation => Intl.message(
-        'Delete this todo?',
-        name: 'deleteTodoConfirmation',
+  String get deleteReadConfirmation => Intl.message(
+        'Delete this reading?',
+        name: 'deleteReadConfirmation',
         args: [],
         locale: locale.toString(),
       );

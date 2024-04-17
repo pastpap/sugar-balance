@@ -1,7 +1,3 @@
-// Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
-// Use of this source code is governed by the MIT license that can be found
-// in the LICENSE file.
-
 import 'dart:async';
 import 'dart:core';
 
@@ -18,8 +14,8 @@ import 'read_entity.dart';
 abstract class ReadsRepository {
   /// Loads reads first from File storage. If they don't exist or encounter an
   /// error, it attempts to load the Reads from a Web Client.
-  Future<List<ReadEntity>> loadReads();
+  Future<List<ReadEntity>?> loadReads();
 
   // Persists reads to local disk and the web
-  Future saveReads(List<ReadEntity> reads);
+  Future saveReads(List<ReadEntity>? reads);
 }

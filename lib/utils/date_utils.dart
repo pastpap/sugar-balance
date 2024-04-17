@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 var formatterDayOfWeek = DateFormat("EEEE");
@@ -8,4 +9,10 @@ bool areDatesEqual(DateTime a, DateTime b) {
     return true;
   }
   return false;
+}
+
+DateTime dateTimeFromDateTimeAndTimeOfDay(
+    DateTime dateTime, TimeOfDay timeOfDay) {
+  return new DateTime(dateTime.year, dateTime.month, dateTime.day,
+      timeOfDay.hour, timeOfDay.minute);
 }

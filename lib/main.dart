@@ -1,15 +1,14 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads_bloc.dart';
-import 'package:sugar_balance/blocs/home_page_bloc.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/blocs/simple_bloc_delegate.dart';
-import 'package:sugar_balance/models/dao/reads_repository_simple.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/screens/add_edit_screen.dart';
-import 'package:sugar_balance/themes/colors.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads_bloc.dart';
+import 'package:sugarbalance/blocs/home_page_bloc.dart';
+import 'package:sugarbalance/blocs/reads/reads.dart';
+import 'package:sugarbalance/blocs/simple_bloc_delegate.dart';
+import 'package:sugarbalance/models/dao/reads_repository_simple.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/screens/add_edit_screen.dart';
+import 'package:sugarbalance/themes/colors.dart';
 
 import 'localizations/localization.dart';
 import 'navigation/keys.dart';
@@ -20,25 +19,25 @@ void main() {
   // BlocSupervisor oversees Blocs and delegates to BlocDelegate.
   // We can set the BlocSupervisor's delegate to an instance of `SimpleBlocDelegate`.
   // This will allow us to handle all transitions and errors in SimpleBlocDelegate.
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  Bloc.observer = SimpleBlocObserver();
   runApp(
     BlocProvider(
-      builder: (context) {
+      create: (context) {
         return ReadsBloc(
-          todosRepository: const ReadsRepositoryFlutter(
+          readsRepository: const ReadsRepositoryFlutter(
             fileStorage: const FileStorage(
               '__flutter_bloc_app__',
               getApplicationDocumentsDirectory,
             ),
           ),
-        )..dispatch(LoadReads());
+        )..add(LoadReads());
       },
-      child: SuggarBlanceApp(),
+      child: SugarBalanceApp(),
     ),
   );
 }
 
-class SuggarBlanceApp extends StatelessWidget {
+class SugarBalanceApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -47,14 +46,14 @@ class SuggarBlanceApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sugar Spice',
+      title: 'Sugar Balance',
       theme: appTheme,
       localizationsDelegates: [SugarBalanceLocalizationsDelegate()],
       routes: {
         Routes.home: (context) {
-          return BlocProviderTree(blocProviders: [
+          return MultiBlocProvider(providers: [
             BlocProvider<FilteredReadsBloc>(
-              builder: (context) => FilteredReadsBloc(
+              create: (context) => FilteredReadsBloc(
                 readsBloc: readsBloc,
                 homePageBloc: homePageBloc,
               ),
@@ -65,12 +64,13 @@ class SuggarBlanceApp extends StatelessWidget {
           return AddEditScreen(
             key: Keys.addReadingScreen,
             onSave: (id, value, date, time, meal, periodOfMeal, note) {
-              readsBloc.dispatch(
+              readsBloc.add(
                 AddRead(Reading(value, date, time, meal, periodOfMeal,
                     note: note, id: id)),
               );
             },
             isEditing: false,
+            selectedDate: homePageBloc.selectedDate,
           );
         },
       },

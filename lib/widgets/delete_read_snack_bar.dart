@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sugar_balance/localizations/localization.dart';
-import 'package:sugar_balance/models/models.dart';
+import 'package:sugarbalance/localizations/localization.dart';
+import 'package:sugarbalance/models/models.dart';
 
 class DeleteReadSnackBar extends SnackBar {
   final SugarBalanceLocalizations localizations;
 
   DeleteReadSnackBar({
-    Key key,
-    @required Reading reading,
-    @required VoidCallback onUndo,
-    @required this.localizations,
+    Key? key,
+    required Reading reading,
+    required VoidCallback onUndo,
+    required this.localizations,
   }) : super(
           key: key,
           content: Text(

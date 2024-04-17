@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/blocs/home_page_bloc.dart';
-import 'package:sugar_balance/components/title_bar.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/navigation/flutter_read_keys.dart';
-import 'package:sugar_balance/navigation/keys.dart';
-import 'package:sugar_balance/navigation/routes.dart';
-import 'package:sugar_balance/themes/colors.dart';
-import 'package:sugar_balance/utils/date_utils.dart';
-import 'package:sugar_balance/widgets/filtered_reads.dart';
-import 'package:sugar_balance/widgets/loading_indicator.dart';
-import 'package:sugar_balance/widgets/radial_progress.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads.dart';
+import 'package:sugarbalance/blocs/home_page_bloc.dart';
+import 'package:sugarbalance/components/title_bar.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/navigation/flutter_read_keys.dart';
+import 'package:sugarbalance/navigation/keys.dart';
+import 'package:sugarbalance/navigation/routes.dart';
+import 'package:sugarbalance/themes/colors.dart';
+import 'package:sugarbalance/utils/date_utils.dart';
+import 'package:sugarbalance/utils/screen_sizes.dart';
+import 'package:sugarbalance/widgets/filtered_reads.dart';
+import 'package:sugarbalance/widgets/loading_indicator.dart';
+import 'package:sugarbalance/widgets/radial_progress.dart';
+import 'package:sugarbalance/widgets/readings_graph.dart';
 
 class MyHomePage extends StatefulWidget {
-  final HomePageBloc homePageBloc;
+  final HomePageBloc? homePageBloc;
 
-  const MyHomePage({Key key, this.homePageBloc}) : super(key: key);
+  const MyHomePage({Key? key, this.homePageBloc}) : super(key: key);
   @override
   MyHomePageState createState() => MyHomePageState();
 }
 
 class MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  HomePageBloc _homePageBloc;
-  AnimationController _iconAnimationController;
+  HomePageBloc? _homePageBloc;
+  late AnimationController _iconAnimationController;
 
   @override
   void initState() {
@@ -37,7 +39,7 @@ class MyHomePageState extends State<MyHomePage>
 
   @override
   void dispose() {
-    _homePageBloc.dispose();
+    _homePageBloc!.dispose();
     _iconAnimationController.dispose();
     super.dispose();
   }
@@ -45,10 +47,10 @@ class MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     final filteredReadsBloc = BlocProvider.of<FilteredReadsBloc>(context);
-
+    bool bigPhone = MediaQuery.of(context).size.height > smallPhoneHeight;
     return BlocBuilder(
         bloc: filteredReadsBloc,
-        builder: (context, state) {
+        builder: (context, dynamic state) {
           if (state is FilteredReadLoading) {
             return LoadingIndicator(key: Keys.readsLoading);
           } else if (state is FilteredReadLoaded) {
@@ -56,7 +58,7 @@ class MyHomePageState extends State<MyHomePage>
             return Scaffold(
               body: SlidingUpPanel(
                 renderPanelSheet: false,
-                color: Colors.blueAccent,
+                color: Colors.purpleAccent,
                 collapsed: _floatingCollapsed(),
                 panel: _floatingPanel(),
                 body: Stack(
@@ -79,19 +81,20 @@ class MyHomePageState extends State<MyHomePage>
                                       size: 35.0,
                                     ),
                                     onPressed: () {
-                                      _homePageBloc.subtractDate();
+                                      _homePageBloc!.subtractDate();
                                     },
                                   ),
                                   StreamBuilder(
-                                    stream: _homePageBloc.dateStream,
-                                    initialData: _homePageBloc.selectedDate,
+                                    stream: _homePageBloc!.dateStream,
+                                    initialData: _homePageBloc!.selectedDate,
                                     builder: (context, snapshot) {
                                       return Expanded(
                                         child: Column(
                                           children: <Widget>[
                                             Text(
-                                              formatterDayOfWeek
-                                                  .format(snapshot.data),
+                                              formatterDayOfWeek.format(
+                                                  DateTime.parse(snapshot.data
+                                                      .toString())),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 24.0,
@@ -99,8 +102,9 @@ class MyHomePageState extends State<MyHomePage>
                                                   letterSpacing: 1.2),
                                             ),
                                             Text(
-                                              formatterDate
-                                                  .format(snapshot.data),
+                                              formatterDate.format(
+                                                  DateTime.parse(snapshot.data
+                                                      .toString())),
                                               style: TextStyle(
                                                 fontSize: 20.0,
                                                 color: Colors.white,
@@ -121,7 +125,7 @@ class MyHomePageState extends State<MyHomePage>
                                         size: 35.0,
                                       ),
                                       onPressed: () {
-                                        _homePageBloc.addDate();
+                                        _homePageBloc!.addDate();
                                       },
                                     ),
                                   )
@@ -130,9 +134,30 @@ class MyHomePageState extends State<MyHomePage>
                             )
                           ],
                         ),
-                        RadialProgress(
-                          highestOfToday: getHighestReadToday(reads),
-                        ),
+                        bigPhone
+                            ? buildRadialProgressAndChartColumn(reads)
+                            : Container(
+                                height: 320,
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            size: 50.0,
+                                            color: Colors.black12,
+                                          ),
+                                        ),
+                                        buildRadialProgressAndChartColumn(
+                                            reads),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
                   ],
@@ -155,6 +180,32 @@ class MyHomePageState extends State<MyHomePage>
         });
   }
 
+  Column buildRadialProgressAndChartColumn(List<Reading> reads) {
+    return Column(
+      children: <Widget>[
+        RadialProgress(
+          highestOfToday: getHighestReadToday(reads),
+        ),
+        Container(
+          height: 300,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 40.0),
+            child: reads.isEmpty
+                ? Icon(
+                    Icons.insert_chart,
+                    size: 200.0,
+                    color: Colors.black12,
+                  )
+                : ReadingsGraph(
+                    reads: reads,
+                    animate: true,
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _floatingCollapsed() {
     return Container(
       decoration: BoxDecoration(
@@ -165,7 +216,7 @@ class MyHomePageState extends State<MyHomePage>
       margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Center(
         child: Text(
-          "Swipe up for today's list",
+          "Swipe up for today's readings",
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
       ),
@@ -203,43 +254,11 @@ class MyHomePageState extends State<MyHomePage>
   double getHighestReadToday(List<Reading> filteredReads) {
     double result = 0;
     filteredReads.forEach((element) {
-      if (result < element.value) {
-        result = element.value.toDouble();
+      if (result < element.value!) {
+        result = element.value!.toDouble();
       }
     });
     return result;
-  }
-}
-
-class MonthlyStatusListing extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              MonthlyStatusRow('February 2017', 'On going'),
-              MonthlyStatusRow('January 2017', 'Failed'),
-              MonthlyStatusRow('December 2016', 'Completed'),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              MonthlyTargetRow('Lose weight', '3.8 ktgt/7 kg'),
-              MonthlyTargetRow('Running per month', '15.3 km/20 km'),
-              MonthlyTargetRow('Avg steps Per day', '10000/10000'),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }
 
@@ -268,32 +287,6 @@ class MonthlyStatusRow extends StatelessWidget {
                 color: Colors.grey,
                 fontStyle: FontStyle.italic,
                 fontSize: 16.0),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MonthlyTargetRow extends StatelessWidget {
-  final String target, targetAchieved;
-
-  MonthlyTargetRow(this.target, this.targetAchieved);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            target,
-            style: TextStyle(color: Colors.black, fontSize: 18.0),
-          ),
-          Text(
-            targetAchieved,
-            style: TextStyle(color: Colors.grey, fontSize: 16.0),
           ),
         ],
       ),

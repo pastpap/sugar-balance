@@ -2,34 +2,35 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:sugar_balance/blocs/filtered_reads/filtered_reads.dart';
-import 'package:sugar_balance/blocs/home_page_bloc.dart';
-import 'package:sugar_balance/blocs/reads/reads.dart';
-import 'package:sugar_balance/models/models.dart';
-import 'package:sugar_balance/utils/date_utils.dart';
+import 'package:sugarbalance/blocs/filtered_reads/filtered_reads.dart';
+import 'package:sugarbalance/blocs/home_page_bloc.dart';
+import 'package:sugarbalance/blocs/reads/reads.dart';
+import 'package:sugarbalance/models/models.dart';
+import 'package:sugarbalance/utils/date_utils.dart';
 
 class FilteredReadsBloc
     extends Bloc<FilteredReadingEvent, FilteredReadingState> {
   final ReadsBloc readsBloc;
   final HomePageBloc homePageBloc;
-  StreamSubscription readsSubscription;
-  StreamSubscription homePageBlockSubscription;
+  late StreamSubscription readsSubscription;
+  late StreamSubscription homePageBlockSubscription;
 
-  FilteredReadsBloc({@required this.readsBloc, @required this.homePageBloc}) {
-    readsSubscription = readsBloc.state.listen((state) {
+  FilteredReadsBloc({required this.readsBloc, required this.homePageBloc})
+      : super(FilteredReadLoading()) {
+    readsSubscription = readsBloc.stream.listen((state) {
       if (state is ReadsLoaded) {
-        dispatch(UpdateReadings((readsBloc.currentState as ReadsLoaded).reads));
+        add(UpdateReadings((readsBloc.state as ReadsLoaded).reads));
       }
     });
-    homePageBlockSubscription = homePageBloc.dateStream.listen(
-        (date) => dispatch(UpdateForDateFilter(homePageBloc.selectedDate)));
+    homePageBlockSubscription = homePageBloc.dateStream
+        .listen((date) => add(UpdateForDateFilter(homePageBloc.selectedDate)));
   }
 
   @override
   FilteredReadingState get initialState {
-    return readsBloc.currentState is ReadsLoaded
+    return readsBloc.state is ReadsLoaded
         ? FilteredReadLoaded(
-            (readsBloc.currentState as ReadsLoaded).reads,
+            (readsBloc.state as ReadsLoaded).reads,
             DateTime.now(),
           )
         : FilteredReadLoading();
@@ -48,10 +49,10 @@ class FilteredReadsBloc
   Stream<FilteredReadingState> _mapUpdateFilterToState(
     UpdateForDateFilter event,
   ) async* {
-    if (readsBloc.currentState is ReadsLoaded) {
+    if (readsBloc.state is ReadsLoaded) {
       yield FilteredReadLoaded(
         _mapReadsToFilteredReads(
-          (readsBloc.currentState as ReadsLoaded).reads,
+          (readsBloc.state as ReadsLoaded).reads,
           event.forDateFilter,
         ),
         event.forDateFilter,
@@ -62,12 +63,12 @@ class FilteredReadsBloc
   Stream<FilteredReadingState> _mapReadsUpdatedToState(
     UpdateReadings event,
   ) async* {
-    final forDateFilter = currentState is FilteredReadLoaded
-        ? (currentState as FilteredReadLoaded).forDate
+    final forDateFilter = state is FilteredReadLoaded
+        ? (state as FilteredReadLoaded).forDate
         : DateTime.now();
     yield FilteredReadLoaded(
       _mapReadsToFilteredReads(
-        (readsBloc.currentState as ReadsLoaded).reads,
+        (readsBloc.state as ReadsLoaded).reads,
         forDateFilter,
       ),
       forDateFilter,
@@ -75,13 +76,17 @@ class FilteredReadsBloc
   }
 
   List<Reading> _mapReadsToFilteredReads(List<Reading> reads, DateTime filter) {
-    return reads.where((read) => areDatesEqual(read.date, filter)).toList();
+    List<Reading> result =
+        reads.where((read) => areDatesEqual(read.date, filter)).toList();
+    result.sort((a, b) => dateTimeFromDateTimeAndTimeOfDay(a.date, a.time)
+        .compareTo(dateTimeFromDateTimeAndTimeOfDay(b.date, b.time)));
+    return result;
   }
 
   @override
-  void dispose() {
+  Future<void> close() async {
     readsSubscription.cancel();
     homePageBlockSubscription.cancel();
-    super.dispose();
+    super.close();
   }
 }

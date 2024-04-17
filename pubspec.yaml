@@ -1,4 +1,4 @@
-name: sugar_balance
+name: sugarbalance
 description: History of blod suggar levels.
 
 # The following defines the version and build number for your application.
@@ -14,27 +14,35 @@ description: History of blod suggar levels.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  meta: ">=1.1.0 <2.0.0"
-  equatable: ^0.6.1
-  flutter_bloc: ^0.18.0
-  path_provider: ^0.4.1
-  sliding_up_panel: ^0.3.4
+  meta: ^1.7.0
+  equatable: ^2.0.3
+  bloc: ^7.2.1
+  flutter_bloc: ^7.2.0
+  path_provider: ^2.0.5
+  sliding_up_panel: ^2.0.0+1
+  charts_flutter: ^0.12.0
+  rxdart: ^0.27.2
   flutter:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  intl:
+  cupertino_icons: ^1.0.3
+  intl: ^0.17.0
+  collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.0"
   flutter_test:
     sdk: flutter
 
-
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
